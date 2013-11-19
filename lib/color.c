@@ -8,22 +8,19 @@ int getColor() {
 	int greenVal = rgb[1];
 	int blueVal = rgb[2];
 
-	if(redVal>100 && greenVal>100 && blueVal>100){
+	if(redVal > 120 && greenVal > 120 && blueVal > 120){
 		return WHITE;
 	}
-	else if(redVal<60 && greenVal<60 && blueVal<60){
+	else if(redVal < 50 && greenVal < 50 && blueVal < 50) {
 		return BLACK;
 	}
-	else if(abs(redVal-greenVal)<20 && redVal<60 && greenVal<60 && blueVal<60 && abs(redVal-blueVal)<20 && abs(blueVal-greenVal)<20){
+	else if(redVal > 65 && redVal < 100 && greenVal > 65 && greenVal < 100 && blueVal > 50 && blueVal < 100){
 		return GREY;
 	}
-	else if(redVal>150 && greenVal>150 && blueVal<(redVal-100)){
-		return YELLOW;
-	}
-	else if(blueVal>100 && abs(greenVal-redVal)<20 && redVal <(blueVal-100)){
+	else if(blueVal > 100 && greenVal < 100 && redVal < 80){
 		return BLUE;
 	}
-	else if(redVal>100 && abs(blueVal-greenVal)<20 && blueVal<(redVal-100)){
+	else if(redVal > 130 && greenVal < 50 && blueVal < 50){
 		return RED;
 	}
 	return -1;
