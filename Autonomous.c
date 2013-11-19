@@ -42,8 +42,8 @@
 
 void init()
 {
-	startTask(updateGyro);
-	startTask(updateIR);
+	StartTask(updateGyro);
+	StartTask(updateIR);
 	wait1Msec(300);
 }
 
