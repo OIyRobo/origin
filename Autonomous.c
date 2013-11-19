@@ -33,36 +33,22 @@
   																	\/______________________/
 
 */
-//#include "JoystickDriver.c"
+#include "JoystickDriver.c"
 #include "headers\gyro.h"
 #include "headers\servo.h"
 #include "headers\ir.h"
 #include "headers\movementTank.h"
 #include "headers\color.h"
 
+void init()
+{
+	startTask(updateGyro);
+	startTask(updateIR);
+	wait1Msec(300);
+}
+
 task main()
 {
-   //waitForStart();
-   StartTask(updateGyro);
-   StartTask(updateIR);
-   //servoTurn(90.0, IRServo);
-   zeroGyro();
-   wait1Msec(1000);
-   /*
-
-   move(50, 1700);
-   turn(-90);
-   move(80, 10000);
-   turn(90);
- 	 move(80, 3800);
- 	 turn(-90);
- 	 move(50, 2100);
- 	 turn(-90);
- 	 move(80, 2000);
- 	 */
- 	 while (true)
- 	 {
- 	   nxtDisplayCenteredTextLine(3, "Color: %i", getColor());
- 	   wait1Msec(17);
- 	 }
+	init();
+	waitForStart();
 }
