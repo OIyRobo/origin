@@ -32,16 +32,17 @@ task updateGyro()
     int offset = getGyroOffset();
     ClearTimer(T1);
     while (true)
-    {
+	{
         prev_vel = cur_vel;
         cur_vel = SensorValue(gyro) - offset;
-        if (abs(cur_vel) < 1)
+        if (abs(cur_vel) < 2)
         {
         	cur_vel = 0;
         }
         avg_vel = (cur_vel + prev_vel) / 2.0;
-        angle += (avg_vel/time1[T1]);
+        angle += ((float)(avg_vel*(float)((float)(time1[T1])/(float)(1000.0))));
         ClearTimer(T1);
+        wait1Msec(15);
     }
 }
 

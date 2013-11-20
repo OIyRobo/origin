@@ -37,7 +37,8 @@
 #include "headers\gyro.h"
 #include "headers\servo.h"
 #include "headers\ir.h"
-#include "headers\movementTank.h"
+//#include "headers\movementTank.h"
+#include "headers\movementOmni.h"
 #include "headers\color.h"
 
 void init()
@@ -50,5 +51,9 @@ void init()
 task main()
 {
 	init();
-	waitForStart();
+	while(true)
+	{
+		nxtDisplayCenteredBigTextLine(3, "%f", getGyroAngle());
+		wait1Msec(17);
+	}
 }
