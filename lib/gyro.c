@@ -7,12 +7,12 @@ float getGyroAngle()
 float getGyroOffset() //Returns offset of gyro for correcting different gyros having different offsets or gyros being moody (different values on different days).
 {
 	float average;
-	const int SAMPLES = 20;
+	const int SAMPLES = 200;
         average = SensorValue(gyro);
         for (int i = 0; i < SAMPLES; i++)
         {
-            average = (average + SensorValue(gyro))/2;
-            wait1Msec(10);
+            average = (average + SensorValue(gyro))/2.0;
+            wait1Msec(1);
         }
 	return average;
 }
