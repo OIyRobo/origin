@@ -25,12 +25,12 @@ void zeroGyro()
 //Gyro task that updates the angle of robot continuously.
 task updateGyro()
 {
-    const int SAMPLE_RATE = 1000; // rate in hertz which the gyro is read at.
     cur_vel = 0;
     float prev_vel = 0;
     float avg_vel = 0;
     angle = 0;
     int offset = getGyroOffset();
+    ClearTimer(T1);
     while (true)
     {
         prev_vel = cur_vel;
@@ -40,8 +40,8 @@ task updateGyro()
         	cur_vel = 0;
         }
         avg_vel = (cur_vel + prev_vel) / 2.0;
-        angle += (avg_vel/SAMPLE_RATE);
-        wait1Msec(1000/SAMPLE_RATE);
+        angle += (avg_vel/time1[T1]);
+        ClearTimer(T1);
     }
 }
 
