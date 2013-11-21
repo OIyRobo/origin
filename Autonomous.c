@@ -57,4 +57,20 @@ task main()
 		nxtDisplayCenteredBigTextLine(3, "%f", getGyroAngle());
 		wait1Msec(17);
 	}
+
+while(zone!=2 || zone !=8){
+
+//drive
+
+}
+if(zone=8){
+
+//turn right 90
+}
+else if(zone=2){
+//turn left 90
+}
+
+
+
 }
