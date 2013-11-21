@@ -38,8 +38,8 @@
 #include "headers\gyro.h"
 #include "headers\servo.h"
 #include "headers\ir.h"
-//#include "headers\movementTank.h"
-#include "headers\movementOmni.h"
+#include "headers\movementTank.h"
+//#include "headers\movementOmni.h"
 #include "headers\color.h"
 
 void init()
@@ -56,20 +56,20 @@ task main()
 
 	ClearTimer(T1);
 	while(zone!=2 && zone !=8){
-		move(FORWARD, 20, 1);
+		move(20, 1);
 	}
 	time = time1(T1);
 
 	if(zone==8){
-
+		turn(90);
 		//put block
-
+		turn(-90);
 	}
 	else if(zone==2){
-
+		turn(-90);
 		//put block
-
+		turn(90);
 	}
 
-	move(BACKWARDS, 20, time);
+	move(-20, time);
 }
