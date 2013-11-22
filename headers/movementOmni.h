@@ -7,7 +7,9 @@ const int FORWARD = 3;
 const int BACKWARDS = 4;
 
 void move(int dir, int power, int time);
+void move(int dir, int power);
 void turn(int degrees);
+void brake();
 
 #include "..\lib\movementOmni.c"
 #endif

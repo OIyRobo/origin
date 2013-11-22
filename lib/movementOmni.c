@@ -1,4 +1,4 @@
-void move(int dir, int power, int time) {
+void move(int dir, int power) {
 	if (dir == RIGHT) {
 		motor[motorFL] = power;
 		motor[motorFR] = -power;
@@ -23,7 +23,58 @@ void move(int dir, int power, int time) {
 		motor[motorBL] = -power;
 		motor[motorBR] = -power;
 	}
-	wait1Msec(time);
+}
+
+void move(int dir, int power, int time)
+{
+	int offset;
+	ClearTimer(T2);
+	while (time1(T2) <= time + offset)
+	{
+		if(getGyroAngle() > 4)
+	  {
+			ClearTimer(T3);
+			turn(-getGyroAngle());
+			offset += time1(T3);
+		}
+		else if (getGyroAngle() < -4)
+		{
+			ClearTimer(T3);
+			turn(-getGyroAngle());
+			offset += time1(T3);
+		}
+		else
+		{
+			if (dir == RIGHT) {
+		motor[motorFL] = power;
+		motor[motorFR] = -power;
+		motor[motorBL] = -power;
+		motor[motorBR] = power;
+	}
+	else if (dir == LEFT) {
+		motor[motorFL] = -power;
+		motor[motorFR] = power;
+		motor[motorBL] = power;
+		motor[motorBR] = -power;
+	}
+	else if (dir == FORWARD) {
+		motor[motorFL] = power;
+		motor[motorFR] = power;
+		motor[motorBL] = power;
+		motor[motorBR] = power;
+	}
+	else if (dir == BACKWARDS) {
+		motor[motorFL] = -power;
+		motor[motorFR] = -power;
+		motor[motorBL] = -power;
+		motor[motorBR] = -power;
+	}
+	}
+}
+	brake();
+}
+
+void brake() {
 	motor[motorFL] = 0;
 	motor[motorFR] = 0;
 	motor[motorBL] = 0;
