@@ -10,6 +10,7 @@ void move(int dir, int power, int time);
 void move(int dir, int power);
 void turn(int degrees);
 void brake();
+void fixDrift(int corrAngle, int direction, int power);
 
 #include "..\lib\movementOmni.c"
 #endif
