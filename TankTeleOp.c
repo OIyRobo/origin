@@ -20,6 +20,7 @@ task main()
 {
 
   waitForStart();
+  bool holdServo = true;
 
   while(true)                            // Infinite loop:
   {
@@ -34,36 +35,49 @@ task main()
     	motor[motorBL] = -joystick.joy1_y1;
   	}
   	else
-	{
-		motor[motorFL] = 0;
-		motor[motorBL] = 0;
-	}
+		{
+			motor[motorFL] = 0;
+			motor[motorBL] = 0;
+		}
 
-	if (abs(joystick.joy1_y2) > 35)
-	{
-		//right motors mapped to joystick 2
-		motor[motorFR] = -joystick.joy1_y2;
-		motor[motorBR] = -joystick.joy1_y2;
-	}
-	else
-	{
-		motor[motorFR] = 0;
-		motor[motorBR] = 0;
-	}
+		if (abs(joystick.joy1_y2) > 35)
+		{
+			//right motors mapped to joystick 2
+			motor[motorFR] = -joystick.joy1_y2;
+			motor[motorBR] = -joystick.joy1_y2;
+		}
+		else
+		{
+			motor[motorFR] = 0;
+			motor[motorBR] = 0;
+		}
 
-	//front spinner
-	if (joy1Btn(5) == 1)
+		//front spinner
+		if (joy1Btn(5) == 1)
   	{
-	motor[motorCube] = 100;
-	}
-	else if (joy1Btn(6) == 1)
-	{
-		motor[motorCube] = -100;
-	}
-	else
-	{
-		motor[motorCube] = 0;
-	}
-	wait1Msec(4); //200 updates/second, more than enough...
+			motor[motorCube] = 100;
+		}
+		else if (joy1Btn(6) == 1)
+		{
+			motor[motorCube] = -100;
+		}
+		else
+		{
+			motor[motorCube] = 0;
+		}
+
+		if (joy1Btn(2) == 1) {
+			if (holdServo)
+				holdServo = false;
+			else
+				holdServo = true;
+		}
+
+		//servo
+		if (holdServo)
+			servo[blockServo] = 127;
+		else
+			servo[blockServo] = 0;
+		wait1Msec(4); //200 updates/second, more than enough...
   }
 }
