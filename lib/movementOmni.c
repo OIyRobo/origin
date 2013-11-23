@@ -1,4 +1,5 @@
 void move(int dir, int power) {
+	int offset = 9;
 	if (dir == RIGHT) {
 		motor[motorFL] = power;
 		motor[motorFR] = -power;
@@ -12,16 +13,16 @@ void move(int dir, int power) {
 		motor[motorBR] = -power;
 	}
 	else if (dir == FORWARD) {
-		motor[motorFL] = power;
+		motor[motorFL] = power-offset;
 		motor[motorFR] = power;
-		motor[motorBL] = power;
+		motor[motorBL] = power-offset;
 		motor[motorBR] = power;
 	}
 	else if (dir == BACKWARDS) {
-		motor[motorFL] = -power;
-		motor[motorFR] = -power;
-		motor[motorBL] = -power;
-		motor[motorBR] = -power;
+		motor[motorFL] = -(power);
+		motor[motorFR] = -(power-offset);
+		motor[motorBL] = -(power);
+		motor[motorBR] = -(power-offset);
 	}
 }
 
@@ -66,22 +67,41 @@ void brake() {
 }
 
 void fixDrift(int corrAngle, int direction, int power) {
-	if (abs(getGyroAngle() - corrAngle) > 3) {
-		if 	(getGyroAngle() > corrAngle) {
-			motor[motorFL] = power - 10;
-			motor[motorBL] = power - 10;
+		if (abs(getGyroAngle() - corrAngle) > 1) {
+			if 	(getGyroAngle() > corrAngle) {
+				motor[motorFL] = 20;
+				motor[motorBL] = 20;
+			}
+			else if (getGyroAngle() < corrAngle) {
+				motor[motorFR] = 20;
+				motor[motorBR] = 20;
+			}
+			/*else if (motor[motorFL] != power || motor[motorFR] != power || motor[motorBR] != power || motor[motorBL] != power) {
+				motor[motorFL] = power;
+				motor[motorFR] = power;
+				motor[motorBL] = power;
+				motor[motorBR] = power;
+			}*/
+
 		}
-		else if (getGyroAngle() < corrAngle) {
-			motor[motorFR] = power - 10;
-			motor[motorBR] = power - 10;
+	/*if (direction == BACKWARDS) {
+		if (abs(getGyroAngle() - corrAngle) > 1) {
+			if 	(getGyroAngle() > corrAngle) {
+				motor[motorFL] = -20;
+				motor[motorBL] = -20;
+			}
+			else if (getGyroAngle() < corrAngle) {
+				motor[motorFR] = -20;
+				motor[motorBR] = -20;
+			}
+			else if (motor[motorFL] != power || motor[motorFR] != power || motor[motorBR] != power || motor[motorBL] != power) {
+				motor[motorFL] = power;
+				motor[motorFR] = power;
+				motor[motorBL] = power;
+				motor[motorBR] = power;
+			}
 		}
-	}
-	else if (motor[motorFL] != power || motor[motorFR] != power || motor[motorBR] != power || motor[motorBL] != power) {
-		motor[motorFL] = power;
-		motor[motorFR] = power;
-		motor[motorBL] = power;
-		motor[motorBR] = power;
-	}
+	}*/
 }
 
 void turn(int degrees) {

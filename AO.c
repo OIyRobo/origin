@@ -61,9 +61,9 @@ task main()
 	startTime = nSysTime;
 	zeroGyro();
 	corrAngle = getGyroAngle();
-	move(FORWARD, 100);
+	move(FORWARD, 70);
 	while(zone!=2 && zone !=8){
-		fixDrift(corrAngle, FORWARD, 100);
+		//fixDrift(corrAngle, FORWARD, 70);
 		wait1Msec(4);
 	}
 	brake();
@@ -82,27 +82,21 @@ task main()
 
 	}
 
+	corrAngle = getGyroAngle();
 	//moving back to start
 	zeroGyro();
-	move(BACKWARDS, 100);
-	startTime = nSysTime;
-	while (nSysTime < startTime + totalTime) {
-		fixDrift(corrAngle, BACKWARDS, 100);
-		wait1Msec(4);
-	}
+	move(BACKWARDS, 70);
+	wait1Msec(totalTime+200);
 	brake();
 	wait1Msec(1000);
 	move(RIGHT, 100);
 
 	//moving to white line
-	while( getColor() != WHITE ) {
-		fixDrift(corrAnlge, RIGHT, 100);
-		wait1Msec(4);
-	}
+	while( getColor() != WHITE ) { wait1Msec(4);}
 	wait1Msec(300);
 	brake();
 
 	//moving onto ramp
-	move(FORWARD, 80);
-	wait1Msec(3000);
+	move(FORWARD, 1000);
+	wait1Msec(2000);
 }

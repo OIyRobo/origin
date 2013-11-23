@@ -6,7 +6,6 @@ const int LEFT = 2;
 const int FORWARD = 3;
 const int BACKWARDS = 4;
 
-void move(int dir, int power, int time);
 void move(int dir, int power);
 void turn(int degrees);
 void brake();

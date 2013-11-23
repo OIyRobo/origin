@@ -55,16 +55,21 @@ task main()
 	int startTime;
 	int endTime;
 	int totalTime;
+	int corrAngle;
 
-	startTime = nSysTime;
+	//moving to IR Beacon & timing
 	zeroGyro();
+	corrAngle = getGyroAngle();
+	turn(-10);
+	startTime = nSysTime;
+	move(BACKWARDS, 70);
 	while(zone!=2 && zone !=8){
-		move(BACKWARDS, 100);
+		//fixDrift(corrAngle, FORWARD, 70);
+		wait1Msec(4);
 	}
 	brake();
 	endTime = nSysTime;
 	totalTime = endTime - startTime;
-	brake();
 	wait1Msec(1000);
 
 	if(zone==8){
@@ -77,16 +82,22 @@ task main()
 		//put block
 
 	}
-	zeroGyro();
+
 	turn(-10);
-	move(FORWARDS, 100);
-	wait1MSec(totalTime);
+	//moving back to start
+	zeroGyro();
+	move(FORWARD, 70);
+	wait1Msec(totalTime);
 	brake();
 	wait1Msec(1000);
-	move(LEFT, 100);
-	while( getColor() != WHITE ) {wait1Msec(4);}
-	wait1Msec(300);
+	move(RIGHT, 100);
+
+	//moving to white line
+	while( getColor() != WHITE ) { wait1Msec(4);}
+	wait1Msec(350);
 	brake();
-	move(BACKWARDS, 80);
-	wait1Msec(3000);
+
+	//moving onto ramp
+	move(BACKWARDS, 100);
+	wait1Msec(2500);
 }
