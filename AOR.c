@@ -51,8 +51,9 @@ void init()
 
 task main()
 {
+	waitForStart();
 	init();
-	int startTime;
+	/*int startTime;
 	int endTime;
 	int totalTime;
 	int corrAngle;
@@ -89,7 +90,7 @@ task main()
 	move(FORWARD, 70);
 	wait1Msec(totalTime);
 	brake();
-	wait1Msec(1000);
+	wait1Msec(1000);*/
 	move(RIGHT, 100);
 
 	//moving to white line
