@@ -13,16 +13,64 @@ void move(int dir, int power) {
 		motor[motorBR] = -power;
 	}
 	else if (dir == FORWARD) {
-		motor[motorFL] = power-offset;
+		motor[motorFL] = power;
 		motor[motorFR] = power;
-		motor[motorBL] = power-offset;
+		motor[motorBL] = power;
 		motor[motorBR] = power;
 	}
 	else if (dir == BACKWARDS) {
-		motor[motorFL] = -(power);
-		motor[motorFR] = -(power-offset);
-		motor[motorBL] = -(power);
-		motor[motorBR] = -(power-offset);
+		motor[motorFL] = -power;
+		motor[motorFR] = -power;
+		motor[motorBL] = -power;
+		motor[motorBR] = -power;
+	}
+	else if (dir == FWDRIGHT) {
+		motor[motorFL] = power;
+		motor[motorFR] = 0;
+		motor[motorBL] = 0;
+		motor[motorBR] = power;
+	}
+	else if (dir == FWDLEFT) {
+		motor[motorFL] = 0;
+		motor[motorFR] = power;
+		motor[motorBL] = power;
+		motor[motorBR] = 0;
+	}
+	else if (dir == BACKRIGHT) {
+		motor[motorFL] = 0;
+		motor[motorFR] = -power;
+		motor[motorBL] = -power;
+		motor[motorBR] = 0;
+	}
+	else if (dir == BACKLEFT) {
+		motor[motorFL] = -power;
+		motor[motorFR] = 0;
+		motor[motorBL] = 0;
+		motor[motorBR] = -power;
+	}
+	else if (dir == ADJFWDRIGHT) {
+		motor[motorFL] = power;
+		motor[motorFR] = power - 20;
+		motor[motorBL] = power - 20;
+		motor[motorBR] = power;
+	}
+	else if (dir == ADJFWDLEFT) {
+		motor[motorFL] = power - 20;
+		motor[motorFR] = power;
+		motor[motorBL] = power;
+		motor[motorBR] = power - 20;
+	}
+	else if (dir == ADJBACKRIGHT) {
+		motor[motorFL] = -(power - 20);
+		motor[motorFR] = -power;
+		motor[motorBL] = -power;
+		motor[motorBR] = -(power - 20);
+	}
+	else if (dir == ADJBACKLEFT) {
+		motor[motorFL] = -power;
+		motor[motorFR] = -(power - 20);
+		motor[motorBL] = -(power - 20);
+		motor[motorBR] = -power;
 	}
 }
 

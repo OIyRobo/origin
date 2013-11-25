@@ -51,53 +51,19 @@ void init()
 
 task main()
 {
-	waitForStart();
+  //waitForStart();
 	init();
-	int startTime;
-	int endTime;
-	int totalTime;
-	int corrAngle;
-
-	//moving to IR Beacon & timing
-	startTime = nSysTime;
-	zeroGyro();
-	corrAngle = getGyroAngle();
-	move(FORWARD, 70);
-	while(zone!=2 && zone !=8){
-		fixDrift(corrAngle, FORWARD, 70);
-		wait1Msec(4);
+	while (zone != 2 && zone != 8) {
+		if (getColor() == BLUE || getColor() == RED)
+			move(ADJFRONTLEFT, 80);
+		else
+			move(ADJFRONTRIGHT, 80);
 	}
-	wait1Msec(400);
-	brake();
-	endTime = nSysTime;
-	totalTime = endTime - startTime;
-	wait1Msec(1000);
-
-	motor[handMotor] = -20;
-	wait1Msec(1000);
-	motor[handMotor] = 20;
-	wait1Msec(750);
-
-
-	corrAngle = getGyroAngle();
-	//moving back to start
-	turn(-10);
-	zeroGyro();
-	move(BACKWARDS, 70);
-	wait1Msec(totalTime+200);
-	brake();
-	turn(20);
-	wait1Msec(1000);
-	move(RIGHT, 100);
-
-	//moving to white line
-	while( getColor() != WHITE ) { wait1Msec(4);}
-	wait1Msec(300);
 	brake();
 
-	//moving onto ramp
-	turn(-20);
-	move(FORWARD, 1000);
-	wait1Msec(2000);
+	//place block
+
+
+
 
 }

@@ -3,7 +3,7 @@
 #pragma config(Sensor, S2,     ir,             sensorI2CCustom)
 #pragma config(Sensor, S3,     gyro,           sensorI2CHiTechnicGyro)
 #pragma config(Sensor, S4,     color,          sensorCOLORFULL)
-#pragma config(Motor,  motorA,           ,             tmotorNXT, PIDControl)
+#pragma config(Motor,  motorA,          handMotor,     tmotorNXT, PIDControl)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  mtr_S1_C1_1,     motorFL,       tmotorTetrix, openLoop, reversed)
@@ -51,42 +51,54 @@ void init()
 
 task main()
 {
+	waitForStart();
+	wait10Msec(1000);
 	init();
 	int startTime;
 	int endTime;
 	int totalTime;
+	int corrAngle;
 
+	//moving to IR Beacon & timing
 	startTime = nSysTime;
 	zeroGyro();
+	corrAngle = getGyroAngle();
+	move(FORWARD, 70);
 	while(zone!=2 && zone !=8){
-		move(FORWARD, 100);
+		fixDrift(corrAngle, FORWARD, 70);
+		wait1Msec(4);
 	}
+	wait1Msec(400);
 	brake();
 	endTime = nSysTime;
 	totalTime = endTime - startTime;
-	brake();
 	wait1Msec(1000);
 
-	if(zone==8){
+	motor[handMotor] = -20;
+	wait1Msec(1000);
+	motor[handMotor] = 20;
+	wait1Msec(750);
 
-		//put block
 
-	}
-	else if(zone==2){
-
-		//put block
-
-	}
-	zeroGyro();
+	corrAngle = getGyroAngle();
+	//moving back to start
 	turn(-10);
-	move(BACKWARDS, 100);
-	wait1MSec(totalTime);
+	zeroGyro();
+	move(BACKWARDS, 70);
+	wait1Msec(totalTime+200);
 	brake();
+	turn(20);
 	wait1Msec(1000);
 	move(RIGHT, 100);
-	while( getColor() != WHITE ) {wait1Msec(4);}
+
+	//moving to white line
+	while( getColor() != WHITE ) { wait1Msec(4);}
 	wait1Msec(300);
 	brake();
-	move(FORWARD, 80);
-	wait1Msec(3000);
+
+	//moving onto ramp
+	turn(-20);
+	move(FORWARD, 1000);
+	wait1Msec(2000);
+
 }
