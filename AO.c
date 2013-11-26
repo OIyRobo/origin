@@ -55,9 +55,9 @@ task main()
 	init();
 	while (zone != 2 && zone != 8) {
 		if (getColor() == BLUE || getColor() == RED)
-			move(ADJFRONTLEFT, 80);
+			move(-45.0, 100);
 		else
-			move(ADJFRONTRIGHT, 80);
+			move(45.0, 100);
 	}
 	brake();
 
