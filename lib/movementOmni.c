@@ -1,11 +1,11 @@
 void move(float angle, int power) {
-	angle = (-angle + 45.0)*PI/180.0; //adjusting angle to unit circle
+	float theta = (-angle + 45.0)*PI/180.0; //adjusting angle to unit circle
 
-	motor[motorFR] = cos(angle) * power;
-	motor[motorBL] = cos(angle) * power;
+	motor[motorFR] = cos(theta) * power; //NE vector
+	motor[motorBL] = cos(theta) * power;
 
-	motor[motorFL] = sin(angle) * power;
-	motor[motorBR] = sin(angle) * power;
+	motor[motorFL] = sin(theta) * power; //NW vector
+	motor[motorBR] = sin(theta) * power;
 }
 
 void brake() {

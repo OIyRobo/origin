@@ -45,7 +45,7 @@ void init()
 {
 	StartTask(updateGyro);
 	StartTask(updateIR);
-	wait1Msec(300);
+	wait1Msec(300); //allow gyro to set offset
 }
 
 task main()
