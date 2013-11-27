@@ -1,7 +1,7 @@
 void move(float theta, int power) {
 	theta = (-theta + 45.0)*PI/180.0; //adjusting angle to unit circle
-	float powers[2] = {cos(theta)*power, sin(theta)*power};
-	maximizePower(powers);
+	float powers[2] = {cos(theta), sin(theta)};
+	maximizePower(powers, power);
 
 	motor[motorFR] = powers[NE];
 	motor[motorBL] = powers[NE];
@@ -59,20 +59,20 @@ void turn(int degrees) {
 	motor[motorBL] = 0;
 }
 
-void maximizePower(float *powers)
+void maximizePower(float *powers, int power)
 {
 	float coefficient = 1.0;
-	if (powers[NW] < 100.0 && powers[NE] < 100.0)
+	if (powers[NW] < power && powers[NE] < power)
 	{
 		if (powers[NW] >= powers[NE])
 		{
-			coefficient = 100.0/powers[NW];
+			coefficient = (float)(power)/powers[NW];
 			powers[NW] *= coefficient;
 			powers[NE] *= coefficient;
 		}
 		else if (powers[NE] > powers[NW])
 		{
-			coefficient = 100.0/powers[NE];
+			coefficient = (float)(power)/powers[NE];
 			powers[NW] *= coefficient;
 			powers[NE] *= coefficient;
 		}
