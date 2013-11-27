@@ -1,11 +1,21 @@
 void move(float angle, int power) {
 	float theta = (-angle + 45.0)*PI/180.0; //adjusting angle to unit circle
+	float powers[2] = {cos(theta)*power, sin(theta)*power};
+	maximizePower(powers);
 
+	motor[motorFR] = powers[NE];
+	motor[motorBL] = powers[NE];
+
+	motor[motorFL] = powers[NW];
+	motor[motorBR] = powers[NW];
+
+	/*
 	motor[motorFR] = cos(theta) * power; //NE vector
 	motor[motorBL] = cos(theta) * power;
 
 	motor[motorFL] = sin(theta) * power; //NW vector
 	motor[motorBR] = sin(theta) * power;
+	*/
 }
 
 void brake() {
@@ -18,7 +28,6 @@ void brake() {
 void turn(int degrees) {
 	zeroGyro();
 	int power = 20;
-	bool starting = true;
 
 	while ( abs(getGyroAngle() - degrees) > .5 || abs(getVel()) > 3)  {
 		if (abs((int)(getGyroAngle() - degrees)) < 50)
@@ -48,4 +57,24 @@ void turn(int degrees) {
 	motor[motorFL] = 0;
 	motor[motorBR] = 0;
 	motor[motorBL] = 0;
+}
+
+void maximizePower(float *powers)
+{
+	float coefficient = 1.0;
+	if (powers[NW] < 100.0 && powers[NE] < 100.0)
+	{
+		if (powers[NW] >= powers[NE])
+		{
+			coefficient = 100.0/powers[NW];
+			powers[NW] *= coefficient;
+			powers[NE] *= coefficient;
+		}
+		else if (powers[NE] > powers[NW])
+		{
+			coefficient = 100.0/powers[NE];
+			powers[NW] *= coefficient;
+			powers[NE] *= coefficient;
+		}
+	}
 }
