@@ -1,5 +1,5 @@
-void move(float angle, int power) {
-	float theta = (-angle + 45.0)*PI/180.0; //adjusting angle to unit circle
+void move(float theta, int power) {
+	theta = (-theta + 45.0)*PI/180.0; //adjusting angle to unit circle
 	float powers[2] = {cos(theta)*power, sin(theta)*power};
 	maximizePower(powers);
 
