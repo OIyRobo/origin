@@ -64,4 +64,6 @@ task main()
 	brake();
 	wait1Msec(1000);
 	move(0, 50);
+	wait1Msec(1000);
+	brake();
 }
