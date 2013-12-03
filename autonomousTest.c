@@ -51,10 +51,10 @@ void init()
 task main()
 {
 	init();
-	while (getZone()! = 8)
+	while (getZone()!= 8)
 	{
 		if (getColor() == RED || getColor() == BLUE)
-			move(-15, 50);
+			move(-15, 50); //omni version. Individual motor power would need to be changed to create large swing turns for the tank drive (to avoid having to stop and turn in place).
 		else
 			move(15, 50);
 	}

@@ -11,6 +11,14 @@ void move(int power, int time) {
 	wait1Msec(500);
 }
 
+void turn(int power, int offset)
+{
+	motor[motorFR] = power - offset;
+	motor[motorFL] = power + offset;
+	motor[motorBR] = power - offset;
+	motor[motorBL] = power + offset;
+}
+
 void turn(int degrees) {
 	zeroGyro();
 	int power = 20;
