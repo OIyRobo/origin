@@ -51,13 +51,17 @@ void init()
 task main()
 {
 	init();
-	while (getZone()! = 8)
-	{
-		if (getColor() == RED || getColor() == BLUE)
-			move(-15, 50);
-		else
-			move(15, 50);
-	}
+	move(90, 50);
+	wait1Msec(1000);
+	brake;
+	wait1Msec(1000);
+	move(-90, 50);
+	wait1Msec(1000);
+	brake;
+	wait1Msec(1000);
+	move(180, 50);
+	wait1Msec(1000);
 	brake();
-	//do basket stuff
+	wait1Msec(1000);
+	move(0, 50);
 }
