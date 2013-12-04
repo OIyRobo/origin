@@ -1,5 +1,6 @@
 void move(float theta, int power) {
 	theta = (-theta + 45.0)*PI/180.0; //adjusting angle to unit circle
+	/*
 	float powers[2] = {cos(theta), sin(theta)};
 	maximizePower(powers, power);
 
@@ -8,14 +9,13 @@ void move(float theta, int power) {
 
 	motor[motorFL] = powers[NW];
 	motor[motorBR] = powers[NW];
-
-	/*
-	motor[motorFR] = cos(theta) * power; //NE vector
-	motor[motorBL] = cos(theta) * power;
-
-	motor[motorFL] = sin(theta) * power; //NW vector
-	motor[motorBR] = sin(theta) * power;
 	*/
+
+	motor[motorBR] = cos(theta) * power; //NE vector
+	motor[motorFL] = cos(theta) * power;
+
+	motor[motorBL] = sin(theta) * power; //NW vector
+	motor[motorFR] = sin(theta) * power;
 }
 
 void brake() {
@@ -25,7 +25,7 @@ void brake() {
 	motor[motorBR] = 0;
 }
 
-void turn(int degrees) {
+/*void turn(int degrees) {
 	zeroGyro();
 	int power = 20;
 
@@ -57,7 +57,7 @@ void turn(int degrees) {
 	motor[motorFL] = 0;
 	motor[motorBR] = 0;
 	motor[motorBL] = 0;
-}
+}*/
 
 void maximizePower(float *powers, int power)
 {
