@@ -51,6 +51,7 @@ void init()
 
 task main()
 {
+	waitForStart();
 	init();
 	int time;
 
@@ -61,15 +62,22 @@ task main()
 	time = time1(T1);
 
 	if(zone==8){
-		turn(90);
 		//put block
-		turn(-90);
 	}
 	else if(zone==2){
-		turn(-90);
 		//put block
-		turn(90);
 	}
 
 	move(-20, time);
+	turn(90);
+	wait1Msec(100);
+	while(getColor()!=WHITE){
+		move(20, .5);
+	//is there a way to move without having to use a time value? this would stutter as is...
+
+
+	}
+	turn(-90);
+	move(/*however long it takes to get to the ramp...*/);
+
 }
