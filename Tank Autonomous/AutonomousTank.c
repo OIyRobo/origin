@@ -35,12 +35,12 @@
 
 */
 #include "JoystickDriver.c"
-#include "headers\gyro.h"
-#include "headers\servo.h"
-#include "headers\ir.h"
-#include "headers\movementTank.h"
+#include "..\headers\gyro.h"
+#include "..\headers\servo.h"
+#include "..\headers\ir.h"
+#include "..\headers\movementTank.h"
 //#include "headers\movementOmni.h"
-#include "headers\color.h"
+#include "..\headers\color.h"
 
 void init()
 {
