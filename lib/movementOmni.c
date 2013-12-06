@@ -1,21 +1,22 @@
-void move(float theta, int power) {
-	theta = (-theta + 45.0)*PI/180.0; //adjusting angle to unit circle
+void move(float theta, int maxPower) {
+	theta = (-theta + 45.0)*PI/180.0; //adjusting from unit circle to compass heading, then converting to rad.
+
+	float powers[2] = {cos(theta), sin(theta)}; //this might be problematic because of floating point precision. We'll see.
+	maximizePower(powers, maxPower);
+
+	motor[motorFR] = powers[NW]; //this actually turns out to be opposite to the intuitive mapping because the wheels rotate 90 degrees off from the motor's orientation.
+	motor[motorBL] = powers[NW];
+
+	motor[motorFL] = powers[NE];
+	motor[motorBR] = powers[NE];
+
 	/*
-	float powers[2] = {cos(theta), sin(theta)};
-	maximizePower(powers, power);
-
-	motor[motorFR] = powers[NE];
-	motor[motorBL] = powers[NE];
-
-	motor[motorFL] = powers[NW];
-	motor[motorBR] = powers[NW];
-	*/
-
 	motor[motorBR] = cos(theta) * power; //NE vector
 	motor[motorFL] = cos(theta) * power;
 
 	motor[motorBL] = sin(theta) * power; //NW vector
 	motor[motorFR] = sin(theta) * power;
+	*/
 }
 
 void brake() {
@@ -62,17 +63,17 @@ void brake() {
 void maximizePower(float *powers, int power)
 {
 	float coefficient = 1.0;
-	if (powers[NW] < power && powers[NE] < power)
+	if (abs(powers[NW]) < power && abs(powers[NE]) < power)
 	{
-		if (powers[NW] >= powers[NE])
+		if (abs(powers[NW]) >= abs(powers[NE]))
 		{
-			coefficient = (float)(power)/powers[NW];
+			coefficient = (float)(power)/abs(powers[NW]);
 			powers[NW] *= coefficient;
 			powers[NE] *= coefficient;
 		}
-		else if (powers[NE] > powers[NW])
+		else if (abs(powers[NE]) > abs(powers[NW]))
 		{
-			coefficient = (float)(power)/powers[NE];
+			coefficient = (float)(power)/abs(powers[NE]);
 			powers[NW] *= coefficient;
 			powers[NE] *= coefficient;
 		}
