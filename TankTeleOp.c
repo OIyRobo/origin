@@ -21,22 +21,22 @@
 task main()
 {
 
-  waitForStart();
-  bool holdServo = true;
+	waitForStart();
+	bool holdServo = true;
 
-  while(true)                            // Infinite loop:
-  {
-    getJoystickSettings(joystick); //update joystick values
+	while(true)                            // Infinite loop:
+	{
+		getJoystickSettings(joystick); //update joystick values
 
 
 		//movement
-    if (abs(joystick.joy1_y1) > 35)
-    {
-    	//Left motors mapped to joystick 1
-    	motor[motorFL] = -joystick.joy1_y1;
-    	motor[motorBL] = -joystick.joy1_y1;
-  	}
-  	else
+		if (abs(joystick.joy1_y1) > 35)
+		{
+			//Left motors mapped to joystick 1
+			motor[motorFL] = -joystick.joy1_y1;
+			motor[motorBL] = -joystick.joy1_y1;
+		}
+		else
 		{
 			motor[motorFL] = 0;
 			motor[motorBL] = 0;
@@ -56,7 +56,7 @@ task main()
 
 		//front spinner
 		if (joy1Btn(5) == 1)
-  	{
+		{
 			motor[motorFlywheel] = 100;
 		}
 		else if (joy1Btn(6) == 1)
@@ -95,12 +95,12 @@ task main()
 			motor[motorFlag] = 0;
 		}
 		//servo
-	/*	if (holdServo)
-			servo[blockServo] = 127;
+		/*	if (holdServo)
+		servo[blockServo] = 127;
 		else
-			servo[blockServo] = 0;
+		servo[blockServo] = 0;
 		wait1Msec(4); //200 updates/second, more than enough...
 
 		*/
-  }
+	}
 }

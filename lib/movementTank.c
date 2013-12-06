@@ -1,14 +1,8 @@
-void move(int power, int time) {
+void move(int power) {
 	motor[motorFR] = power;
 	motor[motorFL] = power;
 	motor[motorBR] = power;
 	motor[motorBL] = power;
-	wait1Msec(time);
-	motor[motorFR] = 0;
-	motor[motorFL] = 0;
-	motor[motorBR] = 0;
-	motor[motorBL] = 0;
-	wait1Msec(500);
 }
 
 void turn(int power, int offset)

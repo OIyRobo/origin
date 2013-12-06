@@ -2,7 +2,7 @@
 #define MOVEMENT_STANDARD_H
 #pragma systemFile
 
-void move(int power, int time);
+void move(int power);
 void turn(int power, int offset);//positive offset goes clockwise, negative counterclockwise.
 void turn(int degrees);
 
