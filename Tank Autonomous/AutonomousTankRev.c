@@ -57,41 +57,45 @@ task main()
 
 	// moving till IR
 	ClearTimer(T2);
-	move(50);
 	while(getZone() != 2){
+		if(time1(T2) < 500)
+			move(-time1(T2)/10);
 		if(getZone()==3){
-			move(30);
+			move(-30);
 		}
 	}
 	move(0);
 	wait1Msec(1000);
-	move(-30);
-	wait1Msec(300);
+	move(30);
+	wait1Msec(400);
 	move(0);
-	time = time1(T2) - 1300;
+	if (time1(T2) > 5000)
+		time = time1(T2) - 3000;
+	else
+		time = time1(T2) - 2900;
 
 	//put block
 	motor[blockMotor] = 100;
-	wait1Msec(800);
+	wait1Msec(500);
 	motor[blockMotor] = -100;
 	wait1Msec(700);
+
+	turn(-180-abs(getGyroAngle()));
 
 	//retracing steps
 	move(-70);
 	wait1Msec(time);
 	move(0);
 
-	turn(90);
+	turn(145);
 
+	ClearTimer(T2);
 	while(getColor()!=WHITE){
-		move(-70);
+		if (time1(T2) == 1000)
+			turn(-45);
+		move(70);
   }
-  move(50);
-  wait1Msec(300);
 	turn(-90);
 	move(70);
-	wait1Msec(1300);
-
-
-
+	wait1Msec(1600);
 }

@@ -26,7 +26,7 @@ void turn(int degrees) {
 		if(abs((int)(getGyroAngle() - degrees)) < 10)
 			power = 5;
 		if (abs(getVel()) < 2)
-			power = 15;
+			power = 17;
 
 		if (getGyroAngle() < degrees) {
 			motor[motorFL] = power;
