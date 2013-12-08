@@ -59,16 +59,23 @@ task main()
 	ClearTimer(T2);
 	move(50);
 	while(getZone() != 2){
-		if(getZone()==3){
+		if (time1(T2) > 4000) {
+			move(0);
+		}
+		else if(getZone()==3){
 			move(30);
 		}
 	}
 	move(0);
-	wait1Msec(1000);
-	move(-30);
-	wait1Msec(300);
-	move(0);
-	time = time1(T2) - 1300;
+	if (time1(T2) > 1500) {
+		time = time1(T2);
+	}
+	else {
+		move(30);
+		wait1Msec(450);
+		move(0);
+		time = time1(T2);
+	}
 
 	//put block
 	motor[blockMotor] = 100;
@@ -83,15 +90,20 @@ task main()
 
 	turn(90);
 
-	while(getColor()!=WHITE){
-		move(-70);
+	ClearTimer(T2);
+	/*while(getColor()!=WHITE){
+		if (time1(T2) < 3000)
+			move(-70);
+		else
+			move(0);
   }
   move(50);
-  wait1Msec(300);
+  wait1Msec(300);*/
+  move(-70);
+  wait1Msec(1500);
+  move(0);
 	turn(-90);
 	move(70);
 	wait1Msec(1300);
-
-
 
 }

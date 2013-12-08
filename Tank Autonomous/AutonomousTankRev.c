@@ -97,5 +97,5 @@ task main()
   }
 	turn(-90);
 	move(70);
-	wait1Msec(1600);
+	wait1Msec(2600);
 }
