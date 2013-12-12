@@ -1,8 +1,8 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTMotor,  HTMotor)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
-#pragma config(Sensor, S2,     ir,             sensorI2CCustom)
-#pragma config(Sensor, S3,     gyro,           sensorI2CHiTechnicGyro)
-#pragma config(Sensor, S4,     color,          sensorCOLORFULL)
+#pragma config(Sensor, S2,     color,          sensorCOLORFULL)
+#pragma config(Sensor, S3,     ir,             sensorI2CCustom)
+#pragma config(Sensor, S4,     gyro,           sensorI2CHiTechnicGyro)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, PIDControl)
 #pragma config(Motor,  motorB,          blockMotor,    tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -51,59 +51,52 @@ void init()
 
 task main()
 {
-	waitForStart();
+
+	//waitForStart();
 	init();
-	int time;
 
-	// moving till IR
+	//move to color line
+	while (getColor() != RED && getColor() != BLUE) {
+		move(50);
+	}
+
 	ClearTimer(T2);
-	move(50);
-	while(getZone() != 2){
-		if (time1(T2) > 4000) {
-			move(0);
+	while (getZone() != 8 && time1(T2) < 2000) {
+		if (getColor() == RED || getColor() == BLUE) {
+			motor[motorFR] = 0;
+			motor[motorBR] = 0;
+			motor[motorFL] = 50;
+			motor[motorBL] = 50;
 		}
-		else if(getZone()==3){
-			move(30);
+		else {
+			motor[motorFR] = 50;
+			motor[motorBR] = 50;
+			motor[motorFL] = 0;
+			motor[motorBL] = 0;
 		}
-	}
-	move(0);
-	if (time1(T2) > 1500) {
-		time = time1(T2);
-	}
-	else {
-		move(30);
-		wait1Msec(450);
-		move(0);
-		time = time1(T2);
 	}
 
-	//put block
+	turn(-getGyroAngle());
+
 	motor[blockMotor] = 100;
-	wait1Msec(800);
+	wait1Msec(1000);
 	motor[blockMotor] = -100;
 	wait1Msec(700);
 
-	//retracing steps
-	move(-70);
-	wait1Msec(time);
-	move(0);
-
-	turn(90);
-
 	ClearTimer(T2);
-	/*while(getColor()!=WHITE){
-		if (time1(T2) < 3000)
-			move(-70);
-		else
-			move(0);
-  }
-  move(50);
-  wait1Msec(300);*/
-  move(-70);
-  wait1Msec(1500);
-  move(0);
-	turn(-90);
-	move(70);
-	wait1Msec(1300);
+	while (time1(T2) < 2000) {
+		if (getColor() == RED || getColor() == BLUE) {
+			motor[motorFR] = -10;
+			motor[motorBR] = -10;
+			motor[motorFL] = -50;
+			motor[motorBL] = -50;
+		}
+		else {
+			motor[motorFR] = -50;
+			motor[motorBR] = -50;
+			motor[motorFL] = -10;
+			motor[motorBL] = -10;
+		}
+	}
 
 }
