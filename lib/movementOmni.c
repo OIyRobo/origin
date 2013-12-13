@@ -28,26 +28,26 @@ void brake() {
 }
 
 void turn(int degrees) {
-	zeroGyro();
+	int target = degrees + getGyroAngle();
 	int power = 20;
 
-	while ( abs(getGyroAngle() - degrees) > .5 || abs(getVel()) > 3)  {
-		if (abs((int)(getGyroAngle() - degrees)) < 50)
+	while ( abs(getGyroAngle() - target) > .5 || abs(getVel()) > 3)  {
+		if (abs((int)(getGyroAngle() - target)) < 50)
 			power = 15;
-		if (abs((int)(getGyroAngle() - degrees)) < 30)
+		if (abs((int)(getGyroAngle() - target)) < 30)
 			power = 10;
-		if(abs((int)(getGyroAngle() - degrees)) < 10)
+		if(abs((int)(getGyroAngle() - target)) < 10)
 			power = 5;
 		if (abs(getVel()) < 2)
 			power = 13;
 
-		if (getGyroAngle() < degrees) {
+		if (getGyroAngle() < target) {
 			motor[motorFL] = power;
 			motor[motorBL] = power;
 			motor[motorFR] = -power;
 			motor[motorBR] = -power;
 		}
-		else if (getGyroAngle() > degrees){
+		else if (getGyroAngle() > target){
 			motor[motorFL] = -power;
 			motor[motorBL] = -power;
 			motor[motorFR] = power;
