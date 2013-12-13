@@ -100,11 +100,11 @@ task main()
 	}
 	brake();
 	//wait1Msec(300);
-	//turn(-getGyroAngle());
+	turn(-getGyroAngle());
 	while (getColor() != WHITE) {
 		move(90, 50);
 	}
-	wait1Msec(300);
+	wait1Msec(400);
 	turn(-getGyroAngle());
 	move(0,100);
 	wait1Msec(2000);
