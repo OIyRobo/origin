@@ -34,13 +34,13 @@
   																	\/______________________/
 
 */
-#include "JoystickDriver.c"
-#include "headers\gyro.h"
-#include "headers\servo.h" m
-#include "headers\ir.h"
+#include "..\JoystickDriver.c"
+#include "..\headers\gyro.h"
+#include "..\headers\servo.h" m
+#include "..\headers\ir.h"
 //#include "headers\movementTank.h"
-#include "headers\movementOmni.h"
-#include "headers\color.h"
+#include "..\headers\movementOmni.h"
+#include "..\headers\color.h"
 
 void init()
 {
@@ -91,7 +91,6 @@ task main()
 	wait1Msec(totalTime);
 	brake();
 	wait1Msec(1000);*/
-	move(RIGHT, 100);
 
 	//moving to white line
 	while( getColor() != WHITE ) { wait1Msec(4);}

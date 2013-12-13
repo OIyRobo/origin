@@ -1,3 +1,4 @@
+
 void move(float theta, int maxPower) {
 	theta = (-theta + 45.0)*PI/180.0; //adjusting from unit circle to compass heading, then converting to rad.
 
@@ -26,7 +27,7 @@ void brake() {
 	motor[motorBR] = 0;
 }
 
-/*void turn(int degrees) {
+void turn(int degrees) {
 	zeroGyro();
 	int power = 20;
 
@@ -58,7 +59,7 @@ void brake() {
 	motor[motorFL] = 0;
 	motor[motorBR] = 0;
 	motor[motorBL] = 0;
-}*/
+}
 
 void maximizePower(float *powers, int power)
 {
