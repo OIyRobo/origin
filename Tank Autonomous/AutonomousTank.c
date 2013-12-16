@@ -3,8 +3,8 @@
 #pragma config(Sensor, S2,     color,          sensorCOLORFULL)
 #pragma config(Sensor, S3,     ir,             sensorI2CCustom)
 #pragma config(Sensor, S4,     gyro,           sensorI2CHiTechnicGyro)
-#pragma config(Motor,  motorA,           ,             tmotorNXT, PIDControl)
-#pragma config(Motor,  motorB,          blockMotor,    tmotorNXT, openLoop)
+#pragma config(Motor,  motorA,          blockMotor,    tmotorNXT, PIDControl)
+#pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  mtr_S1_C1_1,     motorBL,       tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S1_C1_2,     motorFL,       tmotorTetrix, openLoop, reversed)
@@ -51,52 +51,50 @@ void init()
 
 task main()
 {
-
-	//waitForStart();
 	init();
 
-	//move to color line
-	while (getColor() != RED && getColor() != BLUE) {
-		move(50);
-	}
-
 	ClearTimer(T2);
-	while (getZone() != 8 && time1(T2) < 2000) {
-		if (getColor() == RED || getColor() == BLUE) {
-			motor[motorFR] = 0;
-			motor[motorBR] = 0;
-			motor[motorFL] = 50;
-			motor[motorBL] = 50;
-		}
-		else {
-			motor[motorFR] = 50;
-			motor[motorBR] = 50;
-			motor[motorFL] = 0;
-			motor[motorBL] = 0;
-		}
+	while (getZone() != 8) {
+		if (time1(T2) < 200)
+			move(time1(T2) / 8);
 	}
+	int time = time1(T2);
 
-	turn(-getGyroAngle());
+	if (time > 1500) {
+		move(0);
+		wait1Msec(200);
+		move(-25);
+		wait1Msec(400);
+		move(0);
+		time -= 400;
+	}
+	else { time -= 200;}
+	move(0);
 
-	motor[blockMotor] = 100;
-	wait1Msec(1000);
+	motor[blockMotor] = 70;
+	wait1Msec(500);
 	motor[blockMotor] = -100;
 	wait1Msec(700);
+	motor[blockMotor] = 0;
 
 	ClearTimer(T2);
-	while (time1(T2) < 2000) {
-		if (getColor() == RED || getColor() == BLUE) {
-			motor[motorFR] = -10;
-			motor[motorBR] = -10;
-			motor[motorFL] = -50;
-			motor[motorBL] = -50;
-		}
-		else {
-			motor[motorFR] = -50;
-			motor[motorBR] = -50;
-			motor[motorFL] = -10;
-			motor[motorBL] = -10;
-		}
+	while (time1(T2) < time ) {
+		if (time1(T2) < 200)
+			move(-time1(T2) / 8);
 	}
+	move(0);
+
+	turn(45);
+	move(-50);
+	wait1Msec(300);
+	turn(45);
+
+	while(getColor() != WHITE) {
+		move(-50);
+	}
+
+	turn(-90);
+	move(100);
+	wait1Msec(1500);
 
 }
