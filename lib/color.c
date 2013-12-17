@@ -8,7 +8,7 @@ int getColor() {
 	int greenVal = rgb[1];
 	int blueVal = rgb[2];
 
-	if(redVal > 120 && greenVal > 120 && blueVal > 120){
+	if(redVal > 120 && greenVal > 120 && blueVal > 120){ //ugliest logic NA checks the color over and over
 		return WHITE;
 	}
 	else if(redVal < 50 && greenVal < 50 && blueVal < 50) {

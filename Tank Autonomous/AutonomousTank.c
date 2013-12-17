@@ -42,7 +42,7 @@
 //#include "headers\movementOmni.h"
 #include "..\headers\color.h"
 
-void init()
+void init()//updates sensors
 {
 	StartTask(updateGyro);
 	StartTask(updateIR);
@@ -54,7 +54,7 @@ task main()
 	init();
 
 	ClearTimer(T2);
-	while (getZone() != 8) {
+	while (getZone() != 8) { //drives until IR sensor
 		if (time1(T2) < 200)
 			move(time1(T2) / 8);
 	}
@@ -66,7 +66,7 @@ task main()
 		move(-25);
 		wait1Msec(400);
 		move(0);
-		time -= 400;
+		time -= 400; //overdrive correction
 	}
 	else { time -= 200;}
 	move(0);
@@ -75,23 +75,23 @@ task main()
 	wait1Msec(500);
 	motor[blockMotor] = -100;
 	wait1Msec(700);
-	motor[blockMotor] = 0;
+	motor[blockMotor] = 0; //places block
 
 	ClearTimer(T2);
 	while (time1(T2) < time ) {
 		if (time1(T2) < 200)
 			move(-time1(T2) / 8);
 	}
-	move(0);
+	move(0); //drives by the timer in reverse
 
 	turn(45);
 	move(-50);
 	wait1Msec(300);
-	turn(45);
+	turn(45); //45 degree turns toward the ramp
 
 	while(getColor() != WHITE) {
 		move(-50);
-	}
+	} //moves until the white line
 
 	turn(-90);
 	move(100);
