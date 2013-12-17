@@ -61,8 +61,8 @@ task main()
 	}
 
 	//jerking to the left to avoid basket
-	while (getColor() != GREY)
-		move(-45, 75);
+	move(-45, 75);
+	wait1Msec(100);
 
 	//line following until you reach IR
 	while (getZone() != 2 && getZone() != 8) {
@@ -84,12 +84,12 @@ task main()
 	//moving closer to basket
 	turn(-getGyroAngle());
 	move(90, 50);
-	wait1Msec(300);
+	wait1Msec(200);
 	brake();
 
 	//dump block by rotating motor forward and back.
 	motor[motorBlock] = -100;
-	wait1Msec(550);
+	wait1Msec(650);
 	motor[motorBlock] = 100;
 	wait1Msec(1000);
 	motor[motorBlock] = 0;
@@ -98,7 +98,7 @@ task main()
 	move(-90, 50);
 	wait1Msec(350);
 	ClearTimer(T3);
-	while (time1(T3) < 1000) {
+	while (time1(T3) < 1500) {
 		if (getColor() == RED || getColor() == BLUE) {
 			move(210, 50);
 			ClearTimer(T3);
@@ -119,6 +119,6 @@ task main()
 	//move onto ramp
 	turn(-getGyroAngle());
 	move(0,100);
-	wait1Msec(2000);
+	wait1Msec(1700);
 	brake();
 }
