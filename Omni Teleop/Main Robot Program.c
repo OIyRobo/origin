@@ -16,6 +16,7 @@ task main()
 	int threshold = 20;
 	nMotorEncoder[lifterMotor1] = 0;
 	nMotorEncoder[lifterMotor2] = 0;
+
 	while(true)
 	{
     getJoystickSettings(joystick);
