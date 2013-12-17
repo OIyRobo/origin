@@ -1,12 +1,12 @@
 #pragma config(Hubs,  S3, HTMotor,  HTMotor,  HTMotor,  HTMotor)
-#pragma config(Motor,  mtr_S1_C1_1,     lifterMotor1,  tmotorTetrix, openLoop, encoder)
-#pragma config(Motor,  mtr_S1_C1_2,     flagRaiserMotor, tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C2_1,     rightFrontMotor, tmotorTetrix, openLoop, reversed)
-#pragma config(Motor,  mtr_S1_C2_2,     rightBackMotor, tmotorTetrix, openLoop, reversed)
-#pragma config(Motor,  mtr_S1_C3_1,     flywheelMotor, tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C3_2,     lifterMotor2,  tmotorTetrix, openLoop, encoder)
-#pragma config(Motor,  mtr_S1_C4_1,     leftBackMotor, tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S1_C4_2,     leftFrontMotor, tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S3_C1_1,     lifterMotor1,  tmotorTetrix, openLoop, encoder)
+#pragma config(Motor,  mtr_S3_C1_2,     flagRaiserMotor, tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S3_C2_1,     rightFrontMotor, tmotorTetrix, openLoop, reversed)
+#pragma config(Motor,  mtr_S3_C2_2,     rightBackMotor, tmotorTetrix, openLoop, reversed)
+#pragma config(Motor,  mtr_S3_C3_1,     flywheelMotor, tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S3_C3_2,     lifterMotor2,  tmotorTetrix, openLoop, encoder)
+#pragma config(Motor,  mtr_S3_C4_1,     leftBackMotor, tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S3_C4_2,     leftFrontMotor, tmotorTetrix, openLoop)
 
 #include "JoystickDriver.c"
 
@@ -73,25 +73,29 @@ task main()
     	motor[lifterMotor1] = 0;
     	motor[lifterMotor2] = 0;
     }*/
-    if(joy1Btn(04) == 1) // && nMotorEncoder[lifterMotor1] <= 1755
+    if(joy1Btn(06) == 1) // && nMotorEncoder[lifterMotor1] <= 1755
     {
-    	motor[lifterMotor1] = -75;
+    	motor[lifterMotor1] = -35;
     }
-    if(joy1Btn(05) == 1)
+    else if(joy1Btn(08) == 1)
     {
-    	motor[lifterMotor2] = -75;
+    	motor[lifterMotor1] = 35;
     }
-    if(joy1Btn(06) == 1)
-    {
-    	motor[lifterMotor1] = 75;
-    }
-    if(joy1Btn(07) == 1)
-    {
-    	motor[lifterMotor2] = 75;
-    }
-    if(joy1Btn(04) == 0 && joy1Btn(05) == 0 && joy1Btn(06) == 0 && joy1Btn(07) == 0)
+    else if(joy1Btn(06) == 0 && joy1Btn(08) == 0)
     {
     	motor[lifterMotor1] = 0;
+    }
+
+    if(joy1Btn(05) == 1)
+    {
+    	motor[lifterMotor2] = -35;
+    }
+    else if(joy1Btn(07) == 1)
+    {
+    	motor[lifterMotor2] = 35;
+    }
+    else if(joy1Btn(05) == 0 && joy1Btn(07) == 0)
+    {
     	motor[lifterMotor2] = 0;
     }
  	}
