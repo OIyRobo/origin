@@ -53,14 +53,18 @@ task main()
 {
   //waitForStart();
 	init();
-	ClearTimer(T2);
+
+	ClearTimer(T2); //timing for IR correction
+	//moving untill colored line or IR is seen
 	while(getColor() != RED && getColor() != BLUE && getZone() != 2 && getZone() != 8){
 		move(0, 100);
 	}
 
+	//jerking to the left to avoid basket
 	while (getColor() != GREY)
 		move(-45, 75);
 
+	//line following until you reach IR
 	while (getZone() != 2 && getZone() != 8) {
 		if (getColor() == RED || getColor() == BLUE)
 			move(-35, 50);
@@ -68,6 +72,7 @@ task main()
 			move(35, 50);
 	}
 
+	//correcting for IR placement
 	move(0, 50);
 	if (time1(T2) > 2000)
 		wait1Msec(400);
@@ -76,17 +81,20 @@ task main()
 	else
 		wait1Msec(300);
 
+	//moving closer to basket
 	turn(-getGyroAngle());
 	move(90, 50);
 	wait1Msec(300);
 	brake();
 
+	//dump block by rotating motor forward and back.
 	motor[motorBlock] = -100;
 	wait1Msec(550);
 	motor[motorBlock] = 100;
 	wait1Msec(1000);
 	motor[motorBlock] = 0;
 
+	//backwards line following that moves on and off the line
 	move(-90, 50);
 	wait1Msec(350);
 	ClearTimer(T3);
@@ -99,15 +107,18 @@ task main()
 			move(150, 50);
 	}
 	brake();
+
+	//moving to white line
 	//wait1Msec(300);
 	turn(-getGyroAngle());
 	while (getColor() != WHITE) {
 		move(90, 50);
 	}
-	wait1Msec(400);
+	wait1Msec(400); //overshooting line a bit
+
+	//move onto ramp
 	turn(-getGyroAngle());
 	move(0,100);
 	wait1Msec(2000);
 	brake();
-
 }
