@@ -51,8 +51,8 @@ void init()
 
 task main()
 {
-  //waitForStart();
-	wait10Msec(1000);
+  waitForStart();
+	wait1Msec(7113);
 	init();
 
 	ClearTimer(T2); //timing for IR correction
