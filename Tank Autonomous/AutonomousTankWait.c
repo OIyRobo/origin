@@ -51,6 +51,7 @@ void init()
 
 task main()
 {
+	waitForStart();
 	wait10Msec(1000);
 	init();
 

@@ -51,6 +51,7 @@ void init()//updates sensors
 
 task main()
 {
+	waitForStart();
 	init();
 
 	ClearTimer(T2);
