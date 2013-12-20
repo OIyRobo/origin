@@ -39,7 +39,7 @@ void turn(int degrees) {
 		if(abs((int)(getGyroAngle() - target)) < 10)
 			power = 5;
 		if (abs(getVel()) < 2)
-			power = 13;
+			power = 20;
 
 		if (getGyroAngle() < target) {
 			motor[motorFL] = power;
