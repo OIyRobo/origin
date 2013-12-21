@@ -46,20 +46,23 @@ void init()
 	StartTask(updateGyro);
 	StartTask(updateIR);
 	wait1Msec(300);
-	motor[liftMotor1] = 100;
-	motor[liftMotor2] = 100;
+	motor[liftMotor1] = -50;
+	motor[liftMotor2] = -50;
 	wait1Msec(200);
+	motor[liftMotor1] = 0;
+	motor[liftMotor2] = 0;
 }
 
 task main()
 {
   waitForStart();
 	init();
-	wait10Msec(1000);
+	wait10Msec(700);
 
+	ClearTimer(T3); //timing for safety net
 	ClearTimer(T2); //timing for IR correction
 	//moving untill colored line or IR is seen
-	while(getColor() != RED && getColor() != BLUE && getZone() != 2 && getZone() != 8){
+	while(getColor() != RED && getColor() != BLUE && getZone() != 2 && getZone() != 8 && time1(T3) < 2000){
 		move(0, 100);
 	}
 
@@ -67,8 +70,9 @@ task main()
 	move(-45, 75);
 	wait1Msec(100);
 
+	ClearTimer(T3);
 	//line following until you reach IR
-	while (getZone() != 2 && getZone() != 8) {
+	while (getZone() != 2 && getZone() != 8 && time1(T3) < 10000) {
 		if (getColor() == RED || getColor() == BLUE)
 			move(-35, 50);
 		else
@@ -78,11 +82,11 @@ task main()
 	//correcting for IR placement
 	move(0, 50);
 	if (time1(T2) > 2000)
-		wait1Msec(400);
+		wait1Msec(550);
 	else if (time1(T2) > 1000)
 		wait1Msec(500);
 	else
-		wait1Msec(300);
+		wait1Msec(400);
 
 	//moving closer to basket
 	turn(-getGyroAngle());
@@ -100,11 +104,12 @@ task main()
 	//backwards line following that moves on and off the line
 	move(-90, 50);
 	wait1Msec(350);
+	ClearTimer(T2);
 	ClearTimer(T3);
-	while (time1(T3) < 1500) {
+	while (time1(T2) < 1700 && time1(T3) < 10000) {
 		if (getColor() == RED || getColor() == BLUE) {
 			move(210, 50);
-			ClearTimer(T3);
+			ClearTimer(T2);
 		}
 		else
 			move(150, 50);
@@ -113,15 +118,16 @@ task main()
 
 	//moving to white line
 	//wait1Msec(300);
+	ClearTimer(T3);
 	turn(-getGyroAngle());
-	while (getColor() != WHITE) {
+	while (getColor() != WHITE && time1(T3) < 5000) {
 		move(90, 50);
 	}
 	wait1Msec(400); //overshooting line a bit
 
 	//move onto ramp
-	turn(-getGyroAngle());
-	move(0,100);
-	wait1Msec(1700);
+	//turn(-getGyroAngle());
+	move(-getGyroAngle(),100);
+	wait1Msec(1800);
 	brake();
 }
