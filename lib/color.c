@@ -20,7 +20,7 @@ int getColor() {
 	else if(blueVal > 100 && greenVal < 150 && redVal < 100){
 		return BLUE;
 	}
-	else if(redVal > 130 && greenVal < 50 && blueVal < 50){
+	else if(redVal > 130 && greenVal < 100 && blueVal < 100){
 		return RED;
 	}
 	return -1;
