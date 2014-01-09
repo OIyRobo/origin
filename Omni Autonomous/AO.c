@@ -90,7 +90,7 @@ task main()
 	//moving closer to basket
 	turn(-getGyroAngle());
 	move(90, 50);
-	wait1Msec(200);
+	wait1Msec(350);
 	brake();
 
 	//dump block by rotating motor forward and back.
@@ -122,11 +122,11 @@ task main()
 	while (getColor() != WHITE && time1(T3) < 5000) {
 		move(90, 50);
 	}
-	wait1Msec(400); //overshooting line a bit
+	wait1Msec(600); //overshooting line a bit
 
 	//move onto ramp
-	//turn(-getGyroAngle());
+	//turn(-getGyroAngle();
 	move(-getGyroAngle(),100);
-	wait1Msec(1800);
+	wait1Msec(2000);
 	brake();
 }//we win.
