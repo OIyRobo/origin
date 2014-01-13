@@ -46,6 +46,8 @@ void init()
 	StartTask(updateGyro);
 	StartTask(updateIR);
 	wait1Msec(300);
+
+	//raising lift
 	motor[liftMotor1] = -50;
 	motor[liftMotor2] = -50;
 	wait1Msec(200);
@@ -61,8 +63,11 @@ task main()
 	ClearTimer(T3); //timing for safety net
 	ClearTimer(T2); //timing for IR correction
 	//moving untill colored line or IR is seen
-	while(getColor() != RED && getColor() != BLUE && getZone() != 2 && getZone() != 8 && time1(T3) < 2000){
-		move(0, 100);
+	while(getColor() != RED && getColor() != BLUE && getZone() != 2 && getZone() != 8){
+		if (time1(T3) < 1000)
+			move(0, 100);
+		else
+			move(90, 25);
 	}
 
 	//jerking to the left to avoid basket
@@ -101,7 +106,7 @@ task main()
 	motor[motorBlock] = 0;
 
 	//backwards line following that moves on and off the line
-	move(-90, 50);
+	move(-90, 50); //moving away from baskets
 	wait1Msec(350);
 	ClearTimer(T2);
 	ClearTimer(T3);
@@ -119,14 +124,15 @@ task main()
 	//wait1Msec(300);
 	ClearTimer(T3);
 	turn(-getGyroAngle());
-	while (getColor() != WHITE && time1(T3) < 5000) {
+	while (getColor() != RED && getColor() != BLUE && time1(T3) < 5000) {
 		move(90, 50);
 	}
-	wait1Msec(600); //overshooting line a bit
 
 	//move onto ramp
-	//turn(-getGyroAngle();
-	move(-getGyroAngle(),100);
-	wait1Msec(2000);
+	turn(-getGyroAngle());
+	ClearTimer(T2);
+	while (time1(T2) < 2700) {
+		move(-getGyroAngle() + 5,50);
+	}
 	brake();
 }//we win.
