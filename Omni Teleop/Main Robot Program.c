@@ -3,7 +3,7 @@
 #pragma config(Motor,  mtr_S3_C1_2,     flagRaiserMotor, tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S3_C2_1,     rightFrontMotor, tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S3_C2_2,     rightBackMotor, tmotorTetrix, openLoop, reversed)
-#pragma config(Motor,  mtr_S3_C3_1,     flywheelMotor, tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S3_C3_1,     blockLifterMotor, tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S3_C3_2,     lifterMotor2,  tmotorTetrix, openLoop, encoder)
 #pragma config(Motor,  mtr_S3_C4_1,     leftBackMotor, tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S3_C4_2,     leftFrontMotor, tmotorTetrix, openLoop)
@@ -42,38 +42,28 @@ task main()
     	motor[leftFrontMotor]  = 0;
     	motor[rightBackMotor]  = 0;
     }
-  	/*if(joy1Btn(02) == 1)
+//--------------------Block Lifter
+  	if(joy1Btn(02) == 1)
     {
-     	motor[flywheelMotor] = 100;
+     	motor[blockLifterMotor] = 75;
     }
     else if(joy1Btn(02) == 0)
     {
-    	motor[flywheelMotor] = 0;
-    }*/
+    	motor[blockLifterMotor] = 0;
+    }
+//--------------------Flag Raiser
     if(joy1Btn(03) == 1)
     {
-    	motor[flagRaiserMotor] = 100;
+    	motor[flagRaiserMotor] = -50;
+    	wait1Msec(500);
+    	motor[flagRaiserMotor] = -100;
     }
     else if(joy1Btn(03) == 0)
     {
     	motor[flagRaiserMotor] = 0;
     }
-		/*if(joy1Btn(04) == 1 && nMotorEncoder[lifterMotor1] >= 0)
-		{
-    	motor[lifterMotor1] = 75;
-    	motor[lifterMotor2] = 75;
-		}
-		if(joy1Btn(01) == 1 && nMotorEncoder[lifterMotor1] <= 1755)
-		{
-			motor[lifterMotor1] = -75;
-    	motor[lifterMotor2] = -75;
-		}
-		else if(joy1Btn(04) == 0 && joy1Btn(01) == 0)
-		{
-    	motor[lifterMotor1] = 0;
-    	motor[lifterMotor2] = 0;
-    }*/
-    if(joy1Btn(06) == 1) // && nMotorEncoder[lifterMotor1] <= 1755
+//--------------------Lifter
+    if(joy1Btn(06) == 1)
     {
     	motor[lifterMotor1] = -35;
     }
@@ -85,7 +75,6 @@ task main()
     {
     	motor[lifterMotor1] = 0;
     }
-
     if(joy1Btn(05) == 1)
     {
     	motor[lifterMotor2] = -35;
