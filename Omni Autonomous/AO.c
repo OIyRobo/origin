@@ -86,7 +86,7 @@ task main()
 	//correcting for IR placement
 	move(0, 50);
 	if (time1(T2) > 2000)
-		wait1Msec(550);
+		wait1Msec(300);
 	else if (time1(T2) > 1000)
 		wait1Msec(500);
 	else
@@ -110,7 +110,7 @@ task main()
 	wait1Msec(350);
 	ClearTimer(T2);
 	ClearTimer(T3);
-	while (time1(T2) < 1700 && time1(T3) < 10000) {
+	while (time1(T2) < 1600 && time1(T3) < 10000) {
 		if (getColor() == RED || getColor() == BLUE) {
 			move(210, 50);
 			ClearTimer(T2);
@@ -131,7 +131,12 @@ task main()
 	//move onto ramp
 	turn(-getGyroAngle());
 	ClearTimer(T2);
-	while (time1(T2) < 2700) {
+	int rampTime = 2700;
+	while (time1(T2) < rampTime) {
+		if (abs(getGyroAngle()) > 15) {
+			turn(-getGyroAngle());
+			rampTime = time1(T2) + 1000;
+		}
 		move(-getGyroAngle() + 5,50);
 	}
 	brake();
