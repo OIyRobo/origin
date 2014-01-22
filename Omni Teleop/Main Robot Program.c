@@ -1,4 +1,4 @@
-#pragma config(Hubs,  S3, HTMotor,  HTMotor,  HTMotor,  HTMotor)
+'\#pragma config(Hubs,  S3, HTMotor,  HTMotor,  HTMotor,  HTMotor)
 #pragma config(Motor,  mtr_S3_C1_1,     lifterMotor1,  tmotorTetrix, openLoop, encoder)
 #pragma config(Motor,  mtr_S3_C1_2,     flagRaiserMotor, tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S3_C2_1,     rightFrontMotor, tmotorTetrix, openLoop, reversed)

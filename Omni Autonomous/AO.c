@@ -1,6 +1,7 @@
 #pragma config(Hubs,  S3, HTMotor,  HTMotor,  HTMotor,  HTMotor)
 #pragma config(Sensor, S1,     color,          sensorCOLORFULL)
 #pragma config(Sensor, S2,     ir,             sensorI2CCustom)
+#pragma config(Sensor, S3,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S4,     gyro,           sensorI2CHiTechnicGyro)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, PIDControl)
 #pragma config(Motor,  motorB,          motorBlock,    tmotorNXT, openLoop)
@@ -9,7 +10,7 @@
 #pragma config(Motor,  mtr_S3_C1_2,     motorE,        tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S3_C2_1,     motorFR,       tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S3_C2_2,     motorBR,       tmotorTetrix, openLoop)
-#pragma config(Motor,  mtr_S3_C3_1,     motorH,        tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S3_C3_1,     blockLifter,   tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S3_C3_2,     liftMotor2,    tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S3_C4_1,     motorBL,       tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S3_C4_2,     motorFL,       tmotorTetrix, openLoop, reversed)
@@ -53,6 +54,9 @@ void init()
 	wait1Msec(200);
 	motor[liftMotor1] = 0;
 	motor[liftMotor2] = 0;
+
+	//raising block lifter
+
 }
 
 task main()
@@ -120,13 +124,15 @@ task main()
 	}
 	brake();
 
-	//moving to white line
+	//moving to red or blue
 	//wait1Msec(300);
 	ClearTimer(T3);
 	turn(-getGyroAngle());
 	while (getColor() != RED && getColor() != BLUE && time1(T3) < 5000) {
 		move(90, 50);
 	}
+	//slight overdrive
+	wait1Msec(200);
 
 	//move onto ramp
 	turn(-getGyroAngle());
@@ -137,7 +143,7 @@ task main()
 			turn(-getGyroAngle());
 			rampTime = time1(T2) + 1000;
 		}
-		move(-getGyroAngle() + 5,50);
+		move(-getGyroAngle() + 5,75);
 	}
 	brake();
 }//we win.
