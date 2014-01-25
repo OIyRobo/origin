@@ -1,6 +1,6 @@
 #pragma config(Hubs,  S3, HTMotor,  HTMotor,  HTMotor,  HTMotor)
-#pragma config(Sensor, S1,     color,          sensorCOLORFULL)
-#pragma config(Sensor, S2,     ir,             sensorI2CCustom)
+#pragma config(Sensor, S1,     ir,          sensorI2CCustom)
+#pragma config(Sensor, S2,     color,             sensorCOLORFULL)
 #pragma config(Sensor, S4,     gyro,           sensorI2CHiTechnicGyro)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, PIDControl)
 #pragma config(Motor,  motorB,          motorBlock,    tmotorNXT, openLoop)
@@ -140,4 +140,7 @@ task main()
 		move(180-getGyroAngle() + 5,50);
 	}
 	brake();
+	motor[motorBlock] = -100;
+	wait1Msec(650);
+	motor[motorBlock] = 0;
 }//we win.
