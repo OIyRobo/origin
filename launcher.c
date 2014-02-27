@@ -1,6 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTServo,  none,     none)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
-#pragma config(Motor,  mtr_S1_C1_1,     slide,         tmotorTetrix, openLoop)
+#pragma config(Motor,  mtr_S1_C1_1,     slide,         tmotorTetrix, openLoop, encoder)
 #pragma config(Motor,  mtr_S1_C1_2,     motorE,        tmotorTetrix, openLoop)
 #pragma config(Servo,  srvo_S1_C2_1,    release,              tServoStandard)
 #pragma config(Servo,  srvo_S1_C2_2,    servo2,               tServoNone)
@@ -14,13 +14,23 @@ task main()
 {
 	const int fwd = -50;
 	const int back = 50;
+	const int encoderBack = 3600;
+	const int encoderFwd = -3600;
+
 
 	servo[release] = 100;
 	wait1Msec(2000);
 	nMotorEncoder[slide] = 0;
-	while(nMotorEncoder[slide] < 720)
+
+	while(nMotorEncoder[slide] < encoderBack)
 	{
-	  motor[slide] = fwd;
+		nxtDisplayCenteredTextLine(3, "Encoder: %i", nMotorEncoder[slide]);
+		if(encoderBack-(nMotorEncoder[slide]) > 1800){ //slows down as approaches target
+	  	motor[slide] = back;
+		}
+		else{
+			motor[slide] = back-15;
+		}
 
 	}
 	motor[slide] = 0;
@@ -30,9 +40,9 @@ task main()
 	servo[release] = 100;
 	wait1Msec(500);
 	nMotorEncoder[slide] = 0;
-	while(nMotorEncoder[slide] > -720)
+	while(nMotorEncoder[slide] > encoderFwd)
 	{
-	  motor[slide] = back;
+	  motor[slide] = fwd;
 	}
 	motor[slide] = 0;
 
