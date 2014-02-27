@@ -17,17 +17,23 @@ task main()
 
 	servo[release] = 100;
 	wait1Msec(2000);
-	motor[slide] = back;
-	wait1Msec(2000);
-	motor[slide] = 0;
-	wait1Msec(2000);
-	servo[release] = 240;
-	wait1Msec(2000);
+	nMotorEncoder[slide] = 0;
+	while(nMotorEncoder[slide] < 720)
+	{
+	  motor[slide] = fwd;
 
-	//reset
+	}
+	motor[slide] = 0;
+	servo[release] = 240;
+	wait1Msec(2000); //fires a flaming ball of fire
+//reset
 	servo[release] = 100;
 	wait1Msec(500);
-	motor[slide] = fwd;
-	wait1Msec(2000);
+	nMotorEncoder[slide] = 0;
+	while(nMotorEncoder[slide] > -720)
+	{
+	  motor[slide] = back;
+	}
 	motor[slide] = 0;
+
 }
