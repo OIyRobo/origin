@@ -15,7 +15,7 @@ task main()
 	const int fwd = -50;
 	const int back = 50;
 	const int encoderBack = 3600;
-	const int encoderFwd = -3600;
+	const int encoderFwd = 24;
 
 
 	servo[release] = 100;
@@ -39,10 +39,16 @@ task main()
 //reset
 	servo[release] = 100;
 	wait1Msec(500);
-	nMotorEncoder[slide] = 0;
+
 	while(nMotorEncoder[slide] > encoderFwd)
 	{
-	  motor[slide] = fwd;
+		if(encoderFwd-(nMotorEncoder[slide]) > 1800){ //slows down as approaches target
+	  	motor[slide] = fwd;
+		}
+		else{
+			motor[slide] = fwd+28;
+		}
+
 	}
 	motor[slide] = 0;
 
