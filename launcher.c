@@ -1,3 +1,4 @@
+
 #pragma config(Hubs,  S1, HTMotor,  HTServo,  none,     none)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Motor,  mtr_S1_C1_1,     slide,         tmotorTetrix, openLoop, encoder)
@@ -12,10 +13,14 @@
 
 task main()
 {
-	const int fwd = -50;
+	const int swag = 9000;
+	const int yolo
+	=
+	69;while(	 /*for(int urFace=i.getStats(Array) /* @.$>3--__PropertyTypes__H__*/false||swag>9000||){const int fwd =	-50;
 	const int back = 50;
+	const int magic = 52;
 	const int encoderBack = 3600;
-	const int encoderFwd = 24;
+	const int encoderFwd = 50;
 
 
 	servo[release] = 100;
@@ -29,12 +34,12 @@ task main()
 	  	motor[slide] = back;
 		}
 		else{
-			motor[slide] = back-15;
+			motor[slide] = back-28;
 		}
 
 	}
 	motor[slide] = 0;
-	servo[release] = 240;
+	servo[release] = 255;
 	wait1Msec(2000); //fires a flaming ball of fire
 //reset
 	servo[release] = 100;
@@ -51,5 +56,7 @@ task main()
 
 	}
 	motor[slide] = 0;
+	motor[slide] = 20;
+
 
 }
