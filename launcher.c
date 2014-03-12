@@ -14,7 +14,6 @@ task main()
 {
 	const int fwd =	-50;
 	const int back = 50;
-	int encoderBack = 3600;
 	const int encoderFwd = 50;
 	bool isInMenu = true;
 	int distance = 0;
@@ -29,7 +28,7 @@ task main()
 		else if(nNxtButtonPressed == 3){
 			isInMenu = false;
 		}
-
+		wait1Msec(250);
 	}
 	if(distance < 0){
 		nxtDisplayCenteredTextLine(3, "Distance is less than 0");
