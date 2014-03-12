@@ -26,6 +26,8 @@ task main()
 			distance-=600;
 		}
 		else if(nNxtButtonPressed == 3){
+			nxtDisplayCenteredTextLine(3, "LAUNCHING!!!");
+			wait1Msec(2000);
 			isInMenu = false;
 		}
 		wait1Msec(250);
