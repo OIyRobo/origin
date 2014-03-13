@@ -68,6 +68,7 @@ task main()
 
 	motor[slide] = 0;
 	servo[release] = 255;
+	PlaySoundFile("loudtorp.rso");
 	wait1Msec(2000); //fires a flaming ball of fire
 //reset
 	servo[release] = 100;
