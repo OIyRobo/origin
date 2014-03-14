@@ -26,14 +26,15 @@ task main()
 			distance-=600;
 		}
 		else if(nNxtButtonPressed == 3){
-			nxtDisplayCenteredTextLine(3, "LAUNCHING!!!");
+			nxtDisplayCenteredBigTextLine(3, "LAUNCH");
 			wait1Msec(2000);
 			isInMenu = false;
 		}
 		wait1Msec(250);
 	}
 	if(distance < 0){
-		nxtDisplayCenteredTextLine(3, "Distance is less than 0");
+		nxtDisplayCenteredTextLine(3, "Distance is");
+		nxtDisplayCenteredTextLine(4, "less than 0");
 		wait1Msec(2000);
 		return;
 	}
