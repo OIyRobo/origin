@@ -24,7 +24,7 @@ task main()
 	bool isInMenu = true;
 	float distance = 0;
 	while(isInMenu){
-		nxtDisplayCenteredTextLine(3, "Distance: %2f", distance);
+		nxtDisplayCenteredTextLine(3, "Distance: %.1f", distance);
 		if(nNxtButtonPressed == 1){
 		 distance+=1;
 		}
