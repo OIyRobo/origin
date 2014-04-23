@@ -8,7 +8,6 @@ int target = 0;
 
 task P();
 task Display();
-
 bool aligned = false;
 float rate = 0;
 float conv = -1000.0/0.405;
@@ -35,10 +34,8 @@ task main()
 	}
 	nMotorEncoder[drive] = 0;
 	StartTask(Display);
-	StartTask(P);
 	target = distance * conv;
-	while (!aligned)
-		wait1Msec(100);
+	wait1Msec(100);
 	StopTask(P);
 	wait10Msec(100);
 	motor[drive] = 0;
@@ -74,7 +71,7 @@ task P()
 		time = time1[T1];
 		error = target - nMotorEncoder[drive];
 		rate = (error - prevError)/(time - prevTime);
-		if (abs(error) > 15 || abs(rate) > 10)
+		if (abs(error) > 20 || abs(rate) > 10)
 		{
 			if (error < 1000)
 				kP = .03;
@@ -82,7 +79,10 @@ task P()
 			aligned = false;
 		}
 		else
+		{
 			aligned = true;
+			nxtDisplayCenteredBigTextLine(3, "BROKEN");
+	  }
 		wait1Msec(100);
 	}
 }
