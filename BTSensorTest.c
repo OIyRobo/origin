@@ -6,6 +6,7 @@
 task commLink()
 {
 	bBTSkipPswdPrompt = true;
+    setBluetoothVisibility(true);
 	bBTHasProgressSounds = true; //make alert noises
 	setBluetoothOn();
 	while (bBTBusy)
