@@ -20,10 +20,10 @@
 
 int sonarValue[4];
 
-const int back = 3;
-const int left = 2;
-const int right = 1;
-const int front = 0;
+const int left = 0;
+const int back = 1;
+const int right = 2;
+const int front = 3;
 
 task investigate()
 {
@@ -40,43 +40,61 @@ task wander()
 
 task commLink()
 {
+	bBTSkipPswdPrompt = true;
+	bBTHasProgressSounds = true; //make alert noises
+	setBluetoothOn();
+	string name = "Driver";
+    setFriendlyName(name);
+	btSearch();
+	while (bBTBusy) //hopefully this variable can tell if the nxt is searching for devices
+	{
+		wait1Msec(1000);
+	}
+	btConnect(1, "Manager"); //try to connect to the other NXT
+	while (bBTBusy)
+	{
+		wait1Msec(1000);
+	}
+
+
 	bool linked = false;
 	while (!linked)
 	{
-		sendMessageWithParm(42, 42, 42);
-		while(bQueuedMsgAvailable())
-		{
-			ClearMessage();
-			if (message == 0)
-				break;
-			for (int i = 0; i < 3; i++)
-				if (messageParm[i] == 127)
-				{
-					linked = true;
-					break;
-				}
-		}
+		sendMessage(42);
 		while (true)
 		{
-			while(bQueuedMsgAvailable())
-			{
+			if (message == 0)
 				ClearMessage();
-				if (messageParm[0] == 0 || messageParm[1] == 0 || messageParm[2] == 0)
-				{
-					wait1Msec(50);
-					continue;
-				}
-				for (int i = 0; i < 3; i++)
-				{
-					sonarValue[i+1] = messageParm[i];
-				}
-			}
+			else
+				break;
+			wait1Msec(50);
 		}
+		if (message == 314)
+			linked = true;
+		wait1Msec(1000);
 	}
 
-	while (bQueuedMsgAvailable())
+	while (true) //main loop that reads messages from the other NXT
 	{
-
+		word temp;
+		while (bQueuedMsgAvailable()) //empty queue to get latest message
+		{
+			ClearMessage();
+			temp = message;
+		}
+		if (message == 0)
+		{
+			ClearMessage();
+			wait1Msec(10);
+		}
+		else
+		{
+			sonarValue[back] = messageParm[back];
+			sonarValue[right] = messageParm[right];
+			sonarValue[left] = messageParm[left];
+			ClearMessage();
+			wait1Msec(10);
+		}
 	}
 
 
@@ -96,7 +114,7 @@ task main()
 {
 	StartTask(debug);
 	StartTask(updateGyro);
-	StartTask(wander);
+	StartTask(commLink);
 	while(true)
 		wait10Msec(1000);
 }
