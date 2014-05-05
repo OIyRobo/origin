@@ -38,42 +38,52 @@ task wander()
 	}
 }
 
+task debug()
+{
+	while (true)
+	{
+		nxtDisplayCenteredTextLine(2, "Front: %i", sonarValue[front]);
+		nxtDisplayCenteredTextLine(3, "Back: %i", sonarValue[back]);
+		nxtDisplayCenteredTextLine(4, "Left: %i", sonarValue[left]);
+		nxtDisplayCenteredTextLine(5, "Right: %i", sonarValue[right]);
+		nxtDisplayCenteredTextLine(6, "Angle: %.2f", angle);
+		wait1Msec(100);
+	}
+}
+
 task commLink()
 {
-	bBTSkipPswdPrompt = true;
-	bBTHasProgressSounds = true; //make alert noises
-	setBluetoothOn();
-	string name = "Driver";
-    setFriendlyName(name);
-	btSearch();
-	while (bBTBusy) //hopefully this variable can tell if the nxt is searching for devices
-	{
-		wait1Msec(1000);
-	}
-	btConnect(1, "Manager"); //try to connect to the other NXT
-	while (bBTBusy)
-	{
-		wait1Msec(1000);
-	}
+	//bBTSkipPswdPrompt = true;
+	//bBTHasProgressSounds = true; //make alert noises
+	//setBluetoothOn();
+	//string name = "Driver";
+  //setFriendlyName(name);
+	//btSearch();
+	//while (bBTBusy) //hopefully this variable can tell if the nxt is searching for devices
+	//{
+	nxtDisplayTextLine(7, "Searching");
+	wait1Msec(5000);
+	//}
+	//btConnect(1, "Manager"); //try to connect to the other NXT
+	//while (bBTBusy)
+	//{
+	//nxtDisplayTextLine(7, "Connecting");
+	//wait1Msec(1000);
+	//}
 
 
 	bool linked = false;
 	while (!linked)
 	{
+		nxtDisplayCenteredTextLine(7, "Not Linked");
 		sendMessage(42);
-		while (true)
-		{
-			if (message == 0)
-				ClearMessage();
-			else
-				break;
-			wait1Msec(50);
-		}
-		if (message == 314)
+		if (messageParm[0] != 0)
 			linked = true;
-		wait1Msec(1000);
+		ClearMessage();
+		wait1Msec(50);
 	}
-
+	nxtDisplayTextLine(7, "Linked");
+	StartTask(debug);
 	while (true) //main loop that reads messages from the other NXT
 	{
 		word temp;
@@ -92,27 +102,16 @@ task commLink()
 			sonarValue[back] = messageParm[back];
 			sonarValue[right] = messageParm[right];
 			sonarValue[left] = messageParm[left];
+			sonarValue[front] = SensorValue[sonar];
 			ClearMessage();
 			wait1Msec(10);
 		}
 	}
-
-
 }
 
-task debug()
-{
-	while (true)
-	{
-		nxtDisplayCenteredTextLine(3, "Distance: %i", SensorValue[sonar]);
-		nxtDisplayCenteredTextLine(4, "Angle: %.2f", angle);
-		wait1Msec(100);
-	}
-}
 
 task main()
 {
-	StartTask(debug);
 	StartTask(updateGyro);
 	StartTask(commLink);
 	while(true)
