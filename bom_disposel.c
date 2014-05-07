@@ -18,6 +18,7 @@
 #include "headers\movementOmni.h"
 
 int magnetValue;
+
 const int UPPER_THRESHOLD = 70;
 const int LOWER_THRESHOLD = -20;
 const int JUSBLAZE = 420;//for the real robots out there stay lookin out
@@ -44,8 +45,6 @@ task initMagnet() {
 int searchForMagnet(){
 	servo[servo1] = 0;
 	wait1Msec(1000); //arbitrary number!!
-
-
 	servoChangeRate[servo1] = 1;
 	int maxValue = 0;
 	int swag = 0; //point the robot focuses its swag on
@@ -66,24 +65,34 @@ int searchForMagnet(){
 			int blazeit = JUSBLAZE;//if it doesnt work...
 		}
 		servo[servo1] += 1;
-		wait1Msec(60);
+		wait1Msec(20);
 	}
-
 	servo[servo1] = swag;
 	wait1Msec(20*(255-swag));
-	return swag;
+	return swag;//passes back the actual servo value for where the magnet is, accurate to +-2ish
 }
 
+void resetMagnetSensor(){
+		servoChangeRate[servo1] = 2;
+		servo[servo1] = 128;
+		wait1Msec(700);
+}//call after you run searchForMagnet();
+
+int servoToGyroValue(int serValToConv){
+	return serValToConv*(255/180);
+}
 
 task main() {
-	StartTask(updateGyro);
-	wait1Msec(300);
-	turn(90);
-	turn(-90);
-	wait1Msec(100);
-	move(0, 100);
+	StartTask(initMagnet);
+	int serVal = 0;
+	if(magnetValue>UPPER_THRESHOLD || magnetValue<LOWER_THRESHOLD){
+		serVal = searchForMagnet();
+	}
 	wait1Msec(1000);
-	move(180, 100);
-	wait1Msec(1000);
+	resetMagnetSensor();
+	turn(servoToGyroValue(serVal));//turns to the magnet reading
 
+	//will the sonar sensor be responsible for determining distance to magnet??
+
+	//do whatever it is that the lift will do....
 }
