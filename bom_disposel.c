@@ -21,7 +21,6 @@ int magnetValue;
 
 const int UPPER_THRESHOLD = 70;
 const int LOWER_THRESHOLD = -20;
-const int JUSBLAZE = 420;//for the real robots out there stay lookin out
 
 
 task initMagnet() {
@@ -61,9 +60,6 @@ int searchForMagnet(){
 			}
 			total = 0;
 		}
-		else{
-			int blazeit = JUSBLAZE;//if it doesnt work...
-		}
 		servo[servo1] += 1;
 		wait1Msec(20);
 	}
@@ -78,15 +74,18 @@ void resetMagnetSensor(){
 		wait1Msec(700);
 }//call after you run searchForMagnet();
 
-int servoToGyroValue(int serValToConv){
-	return serValToConv*(255/180);
+int servoToGyroValue(int servoVal){
+	return servoVal*180/255;
 }
 
 task main() {
 	StartTask(initMagnet);
+	StartTask(updateGyro);
+	wait1Msec(1000);
 	int serVal = 0;
 	if(magnetValue>UPPER_THRESHOLD || magnetValue<LOWER_THRESHOLD){
 		serVal = searchForMagnet();
+
 	}
 	wait1Msec(1000);
 	resetMagnetSensor();
