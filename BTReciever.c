@@ -17,26 +17,7 @@
 
 #include "headers/gyro.h"
 #include "headers/movementOmni.h"
-
-int sonarValue[4];
-
-const int left = 0;
-const int back = 1;
-const int right = 2;
-const int front = 3;
-
-task investigate()
-{
-}
-
-task wander()
-{
-	while(true)
-	{
-		if (SensorValue[sonar] < 255)
-			StartTask(investigate);
-	}
-}
+#include "headers/bluetooth.h"
 
 task debug()
 {
@@ -51,69 +32,12 @@ task debug()
 	}
 }
 
-task commLink()
-{
-	//bBTSkipPswdPrompt = true;
-	//bBTHasProgressSounds = true; //make alert noises
-	//setBluetoothOn();
-	//string name = "Driver";
-  //setFriendlyName(name);
-	//btSearch();
-	//while (bBTBusy) //hopefully this variable can tell if the nxt is searching for devices
-	//{
-	nxtDisplayTextLine(7, "Searching");
-	wait1Msec(5000);
-	//}
-	//btConnect(1, "Manager"); //try to connect to the other NXT
-	//while (bBTBusy)
-	//{
-	//nxtDisplayTextLine(7, "Connecting");
-	//wait1Msec(1000);
-	//}
-
-
-	bool linked = false;
-	while (!linked)
-	{
-		nxtDisplayCenteredTextLine(7, "Not Linked");
-		sendMessage(42);
-		if (messageParm[0] != 0)
-			linked = true;
-		ClearMessage();
-		wait1Msec(50);
-	}
-	nxtDisplayTextLine(7, "Linked");
-	StartTask(debug);
-	while (true) //main loop that reads messages from the other NXT
-	{
-		word temp;
-		while (bQueuedMsgAvailable()) //empty queue to get latest message
-		{
-			ClearMessage();
-			temp = message;
-		}
-		if (message == 0)
-		{
-			ClearMessage();
-			wait1Msec(10);
-		}
-		else
-		{
-			sonarValue[back] = messageParm[back];
-			sonarValue[right] = messageParm[right];
-			sonarValue[left] = messageParm[left];
-			sonarValue[front] = SensorValue[sonar];
-			ClearMessage();
-			wait1Msec(10);
-		}
-	}
-}
-
 
 task main()
 {
 	StartTask(updateGyro);
-	StartTask(commLink);
+	StartTask(SendAck);
+	StartTask(debug);
 	while(true)
 		wait10Msec(1000);
 }
