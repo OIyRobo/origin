@@ -16,7 +16,6 @@
 int magnetValue;
 const int UPPER_THRESHOLD = 70;
 const int LOWER_THRESHOLD = -20;
-const int JUSBLAZE = 420;
 
 
 task initMagnet() {
@@ -57,9 +56,6 @@ int searchForMagnet(){
 				swag = a-2;
 			}
 			total = 0;
-		}
-		else{
-			int blazeit = 420;
 		}
 		servo[servo1] += 1;
 		wait1Msec(60);
