@@ -24,7 +24,7 @@ task commLink()
   //setFriendlyName(name);
 
 	ClearMessage();
-	bool linked = true;
+	bool linked = false;
 	int i = 0;
 	while (!linked)  //basic link ack
 	{

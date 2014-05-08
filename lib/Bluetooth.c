@@ -14,6 +14,7 @@ task SendAck()
 		ClearMessage();
 		wait1Msec(50);
 	}
+	nxtDisplayCenteredTextLine(1, "Linked");
 	StartTask(ReceiveData);
 }
 
@@ -21,47 +22,45 @@ task LookForAck()
 {
 	bBTHasProgressSounds = true; //make alert noises
 	ClearMessage();
-	bool linked = true;
+	bool linked = false;
 	int i = 0;
 	while (!linked)
 	{
-		nxtDisplayCenteredTextLine(5, "Searching");
+		nxtDisplayCenteredTextLine(3, "Searching");
 		if (message == 0)
 		{
 			i++;
-			nxtDisplayCenteredTextLine(4, "No msg rcvd, %i", i);
+			nxtDisplayCenteredTextLine(2, "No msg rcvd, %i", i);
 			ClearMessage();
 		}
 		else if (message == 42)
 		{
-			nxtDisplayCenteredTextLine(5, "Received Ack");
+			nxtDisplayCenteredTextLine(3, "Received Ack");
 			wait1Msec(100);
 			sendMessage(314);
 			linked = true;
 		}
 		else
 		{
-			nxtDisplayCenteredTextLine(3, "Message: %i", message);
+			nxtDisplayCenteredTextLine(1, "Message: %i", message);
 			ClearMessage();
-			StartTask(ReceiveData);
 		}
 		wait1Msec(50);
 	}
+	StartTask(SendSensorData);
 }
 
 task SendSensorData()
 {
-	StopTask(LookForAck);
 	while (true)
 	{
-		sendMessageWithParm(SensorValue[left], SensorValue[back], SensorValue[right]);
+		sendMessageWithParm(SensorValue[S1], SensorValue[S2], SensorValue[S3]);
 		wait10Msec(50);
 	}
 }
 
 task ReceiveData()
 {
-	StopTask(SendAck);
 	while (true) //main loop that reads messages from the other NXT
 	{
 		word temp;
@@ -69,6 +68,7 @@ task ReceiveData()
 		{
 			ClearMessage();
 			temp = message;
+			wait1Msec(10);
 		}
 		if (message == 0)
 		{
@@ -80,7 +80,7 @@ task ReceiveData()
 			sonarValue[back] = messageParm[back];
 			sonarValue[right] = messageParm[right];
 			sonarValue[left] = messageParm[left];
-			sonarValue[front] = SensorValue[sonar];
+			sonarValue[front] = SensorValue[S3];
 			ClearMessage();
 			wait1Msec(10);
 		}
