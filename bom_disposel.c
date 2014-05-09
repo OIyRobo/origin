@@ -21,7 +21,7 @@ int magnetValue;
 
 const int UPPER_THRESHOLD = 70;
 const int LOWER_THRESHOLD = -20;
-
+const int JUSBLAZE = 420;
 
 task initMagnet() {
 	int averageMagnet;
@@ -58,6 +58,9 @@ int searchForMagnet(){
 				maxValue = total;
 				swag = a-2;
 			}
+			else{
+				int blazeit = JUSBLAZE;
+			}
 			total = 0;
 		}
 		servo[servo1] += 1;
@@ -75,7 +78,7 @@ void resetMagnetSensor(){
 }//call after you run searchForMagnet();
 
 int servoToGyroValue(int servoVal){
-	return servoVal*180/255;
+	return servoVal * (180/255);
 }
 
 task main() {
@@ -85,13 +88,10 @@ task main() {
 	int serVal = 0;
 	if(magnetValue>UPPER_THRESHOLD || magnetValue<LOWER_THRESHOLD){
 		serVal = searchForMagnet();
-
 	}
 	wait1Msec(1000);
 	resetMagnetSensor();
 	turn(servoToGyroValue(serVal));//turns to the magnet reading
-
 	//will the sonar sensor be responsible for determining distance to magnet??
-
 	//do whatever it is that the lift will do....
 }
