@@ -1,14 +1,14 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  none)
-#pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S2,     magnet,         sensorAnalog)
-#pragma config(Sensor, S3,     gyro,           sensorI2CHiTechnicGyro)
+#pragma config(Sensor, S3,     sonar,          sensorSONAR)
+#pragma config(Sensor, S4,     gyro,           sensorI2CHiTechnicGyro)
 #pragma config(Motor,  mtr_S1_C1_1,     motorBL,       tmotorTetrix, openLoop, reversed)
 #pragma config(Motor,  mtr_S1_C1_2,     motorBR,       tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_1,     motorFR,       tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C2_2,     motorFL,       tmotorTetrix, openLoop, reversed)
-#pragma config(Servo,  srvo_S1_C3_1,    servo1,               tServoStandard)
-#pragma config(Servo,  srvo_S1_C3_2,    servo2,               tServoNone)
-#pragma config(Servo,  srvo_S1_C3_3,    servo3,               tServoNone)
+#pragma config(Servo,  srvo_S1_C3_1,    magServo,             tServoStandard)
+#pragma config(Servo,  srvo_S1_C3_2,    armServo,             tServoStandard)
+#pragma config(Servo,  srvo_S1_C3_3,    grabServo,            tServoStandard)
 #pragma config(Servo,  srvo_S1_C3_4,    servo4,               tServoNone)
 #pragma config(Servo,  srvo_S1_C3_5,    servo5,               tServoNone)
 #pragma config(Servo,  srvo_S1_C3_6,    servo6,               tServoNone)
@@ -16,12 +16,15 @@
 
 #include "headers\gyro.h"
 #include "headers\movementOmni.h"
+#include "headers/Bluetooth.h"
 
 int magnetValue;
+int serVal = 0;
 
 const int UPPER_THRESHOLD = 70;
 const int LOWER_THRESHOLD = -20;
-const int JUSBLAZE = 420;
+const float JUSBLAZE = 420.00;
+
 
 task initMagnet() {
 	int averageMagnet;
@@ -42,9 +45,10 @@ task initMagnet() {
 }
 
 int searchForMagnet(){
-	servo[servo1] = 0;
+	servoChangeRate[magServo] = 5;
+	servo[magServo] = 0;
 	wait1Msec(1000); //arbitrary number!!
-	servoChangeRate[servo1] = 1;
+	servoChangeRate[magServo] = 1;
 	int maxValue = 0;
 	int swag = 0; //point the robot focuses its swag on
 	int total = 0; //used to store 5 values before averaging
@@ -63,35 +67,55 @@ int searchForMagnet(){
 			}
 			total = 0;
 		}
-		servo[servo1] += 1;
+		servo[magServo] += 1;
 		wait1Msec(20);
 	}
-	servo[servo1] = swag;
+	servo[magServo] = swag;
 	wait1Msec(20*(255-swag));
 	return swag;//passes back the actual servo value for where the magnet is, accurate to +-2ish
 }
 
 void resetMagnetSensor(){
-		servoChangeRate[servo1] = 2;
-		servo[servo1] = 128;
+		servoChangeRate[magServo] = 5;
+		servo[magServo] = 128;
 		wait1Msec(700);
 }//call after you run searchForMagnet();
 
 int servoToGyroValue(int servoVal){
-	return servoVal * (180/255);
+	return servoVal * 180.0/255.0;
+}
+
+void pickUp(){
+	//chase wants headphones
+	servo[grabServo]=JUSBLAZE/4;
+	wait1Msec(JUSBLAZE*2);
+	servo[armServo]=JUSBLAZE/2;
+	wait1Msec(JUSBLAZE*2);
 }
 
 task main() {
+	servo[armServo] = JUSBLAZE/4.2;
+	servo[grabServo] = JUSBLAZE/42;
 	StartTask(initMagnet);
 	StartTask(updateGyro);
-	wait1Msec(1000);
-	int serVal = 0;
-	if(magnetValue>UPPER_THRESHOLD || magnetValue<LOWER_THRESHOLD){
-		serVal = searchForMagnet();
+	StartTask(SendAck);
+	wait1Msec(5000);
+
+	while(true){
+		resetMagnetSensor();
+		if(magnetValue>UPPER_THRESHOLD || magnetValue<LOWER_THRESHOLD){
+
+			serVal = searchForMagnet();
+			wait1Msec(1000);
+			resetMagnetSensor();
+			turn(servoToGyroValue(serVal));//turns to the magnet reading
+			while(sonarValue[front]>JUSBLAZE/42){//10 boiiii
+					move(0, 20);
+			}
+			pickUp();
+		}
+
 	}
-	wait1Msec(1000);
-	resetMagnetSensor();
-	turn(servoToGyroValue(serVal));//turns to the magnet reading
 	//will the sonar sensor be responsible for determining distance to magnet??
 	//do whatever it is that the lift will do....
 }
