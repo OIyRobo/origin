@@ -82,15 +82,22 @@ void resetMagnetSensor(){
 }//call after you run searchForMagnet();
 
 int servoToGyroValue(int servoVal){
-	return servoVal * 180.0/255.0;
+	return (128-servoVal) * 180.0/255.0;
+}
+
+int min(int a, int b) {
+	if (a < b)
+		return a;
+	return b;
 }
 
 void pickUp(){
 	//chase wants headphones
-	servo[grabServo]=JUSBLAZE/4;
+	servoChangeRate[grabServo] = 2;
+	servo[grabServo]=128;
 	wait1Msec(JUSBLAZE*2);
 	servo[armServo]=JUSBLAZE/2;
-	wait1Msec(JUSBLAZE*2);
+	wait1Msec(JUSBLAZE);
 }
 
 task main() {
@@ -109,9 +116,13 @@ task main() {
 			wait1Msec(1000);
 			resetMagnetSensor();
 			turn(servoToGyroValue(serVal));//turns to the magnet reading
-			while(sonarValue[front]>JUSBLAZE/42){//10 boiiii
-					move(0, 20);
+			servo[magServo] = 0;
+			servoChangeRate[magServo] = 5;
+			wait1Msec(1000);
+			while(SensorValue[sonar]>10){//10 boiiii
+					move(0, min(SensorValue[sonar], 15));
 			}
+			brake();
 			pickUp();
 		}
 
