@@ -20,7 +20,7 @@
 
 int magnetValue;
 int serVal = 0;
-
+int sonarVal = 0;
 const int UPPER_THRESHOLD = 70;
 const int LOWER_THRESHOLD = -20;
 const float JUSBLAZE = 420.00;
@@ -72,7 +72,7 @@ int searchForMagnet(){
 	}
 	servo[magServo] = swag;
 	wait1Msec(20*(255-swag));
-	return swag;//passes back the actual servo value for where the magnet is, accurate to +-2ish
+	return swag;//passes back the actual servo value for where the magnet is, accurate to +-255ish
 }
 
 void resetMagnetSensor(){
@@ -82,40 +82,61 @@ void resetMagnetSensor(){
 }//call after you run searchForMagnet();
 
 int servoToGyroValue(int servoVal){
-	return servoVal * 180.0/255.0;
+	return -(servoVal-128) * 180.0/255.0;
 }
 
 void pickUp(){
 	//chase wants headphones
 	servo[grabServo]=JUSBLAZE/4;
 	wait1Msec(JUSBLAZE*2);
-	servo[armServo]=JUSBLAZE/2;
-	wait1Msec(JUSBLAZE*2);
+	servo[armServo]=255;
+	wait1Msec(JUSBLAZE*3);
+}
+
+void resetArm(){
+	servo[armServo] = 90;
+	servo[grabServo] = JUSBLAZE/52;
+	wait1Msec(700);
+	resetMagnetSensor();
+
 }
 
 task main() {
-	servo[armServo] = JUSBLAZE/4.2;
-	servo[grabServo] = JUSBLAZE/42;
+	resetArm();
 	StartTask(initMagnet);
 	StartTask(updateGyro);
 	StartTask(SendAck);
 	wait1Msec(5000);
-
 	while(true){
 		resetMagnetSensor();
 		if(magnetValue>UPPER_THRESHOLD || magnetValue<LOWER_THRESHOLD){
-
 			serVal = searchForMagnet();
 			wait1Msec(1000);
 			resetMagnetSensor();
 			turn(servoToGyroValue(serVal));//turns to the magnet reading
-			while(sonarValue[front]>JUSBLAZE/42){//10 boiiii
+			sonarVal = SensorValue[sonar];
+			while(SensorValue[sonar]>JUSBLAZE/42){//10 boiiii
 					move(0, 20);
 			}
-			pickUp();
+			brake();//i cant stoppppppppppppppppppppppppppppppppp
+			pickUp();//and get myself back in the raaaaaaaaaaaaaceeeeee... thattts liiiiiiiiiiiiifeeeeee
+			resetArm();//let it go let ittt gooooooo
+			//win
 		}
-
 	}
-	//will the sonar sensor be responsible for determining distance to magnet??
-	//do whatever it is that the lift will do....
 }
+//the art of constants
+/*
+downloadBad = pirate;
+soundBlip = news;
+hasJoystickDownloadMessageOpcodes
+FACTORYRESET
+LowVoltageBatteryCountLimits
+LoadBuildOptions__H_
+debugLowSpedebugLowSpeed
+writeDataBytesFlash
+REDCOLOR
+TOpCodeSourceParmTypes
+hsMsgModeMaster
+pewPewPew
+*/
