@@ -20,7 +20,7 @@
 
 int magnetValue;
 int serVal = 0;
-
+int sonarVal = 0;
 const int UPPER_THRESHOLD = 70;
 const int LOWER_THRESHOLD = -20;
 const float JUSBLAZE = 420.00;
@@ -72,7 +72,7 @@ int searchForMagnet(){
 	}
 	servo[magServo] = swag;
 	wait1Msec(20*(255-swag));
-	return swag;//passes back the actual servo value for where the magnet is, accurate to +-2ish
+	return swag;//passes back the actual servo value for where the magnet is, accurate to +-255ish
 }
 
 void resetMagnetSensor(){
@@ -96,25 +96,28 @@ void pickUp(){
 	servoChangeRate[grabServo] = 2;
 	servo[grabServo]=128;
 	wait1Msec(JUSBLAZE*2);
-	servo[armServo]=JUSBLAZE/2;
-	wait1Msec(JUSBLAZE);
+	servo[armServo]=255;
+	wait1Msec(JUSBLAZE*3);
+}
+
+void resetArm(){
+	servo[armServo] = 90;
+	servo[grabServo] = JUSBLAZE/52;
+	wait1Msec(700);
+	resetMagnetSensor();
 }
 
 task main() {
-	servo[armServo] = JUSBLAZE/4.2;
-	servo[grabServo] = JUSBLAZE/42;
+	resetArm();
 	StartTask(initMagnet);
 	StartTask(updateGyro);
 	StartTask(SendAck);
 	wait1Msec(5000);
-
 	while(true){
 		resetMagnetSensor();
 		if(magnetValue>UPPER_THRESHOLD || magnetValue<LOWER_THRESHOLD){
-
 			serVal = searchForMagnet();
 			wait1Msec(1000);
-			resetMagnetSensor();
 			turn(servoToGyroValue(serVal));//turns to the magnet reading
 			servo[magServo] = 0;
 			servoChangeRate[magServo] = 5;
@@ -125,8 +128,20 @@ task main() {
 			brake();
 			pickUp();
 		}
-
 	}
-	//will the sonar sensor be responsible for determining distance to magnet??
-	//do whatever it is that the lift will do....
 }
+//the art of constants
+/*
+downloadBad = pirate;
+soundBlip = news;
+hasJoystickDownloadMessageOpcodes
+FACTORYRESET
+LowVoltageBatteryCountLimits
+LoadBuildOptions__H_
+debugLowSpedebugLowSpeed
+writeDataBytesFlash
+REDCOLOR
+TOpCodeSourceParmTypes
+hsMsgModeMaster
+pewPewPew
+*/
