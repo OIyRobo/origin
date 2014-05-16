@@ -102,7 +102,7 @@ void pickUp(){
 
 void resetArm(){
 	servo[armServo] = 90;
-	servo[grabServo] = JUSBLAZE/52;
+	servo[grabServo] = 255;
 	wait1Msec(700);
 	resetMagnetSensor();
 }
@@ -123,7 +123,7 @@ task main() {
 			servoChangeRate[magServo] = 5;
 			wait1Msec(1000);
 			while(SensorValue[sonar]>10){//10 boiiii
-					move(0, min(SensorValue[sonar], 15));
+				move(0, min(SensorValue[sonar], 15));
 			}
 			brake();
 			pickUp();
